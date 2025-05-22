@@ -1,0 +1,1796 @@
+/**
+ * AA: Game UI
+ */
+body.is_safari:not(.is-mobile) #player-status-bar {
+  /* Safari: given rasterization, keep things pixelated and sharp for sprites. */
+  image-rendering: pixelated;
+}
+
+body.game-started {
+  -webkit-touch-callout: none;
+  touch-action: none;
+  /* on mobile especially, aggressively disable selection. this is a game, not a document. ;) */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#game-status-bar.building {
+  /* when inventory is being ordered */
+  border-color: #fff;
+}
+
+/* nested in #player-status-bar */
+#spinner {
+  /* .mac-system-spinner */
+  position: absolute;
+  top: calc(-2.5px * var(--gs));
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale3d(1.25, 1.25, 1);
+  width: calc(8px * var(--gs));
+  height: calc(8px * var(--gs));
+  z-index: 11;
+  opacity: 0;
+  transition:
+    transform 0.5s ease-in-out,
+    opacity 0.5s ease-in-out;
+}
+
+#spinner:not(.animating) {
+  /* avoid invisible animations. */
+  background: 0 0;
+}
+
+#spinner.active {
+  opacity: 1;
+  transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1);
+}
+
+#funds {
+  position: absolute;
+  top: calc(4px * var(--gs));
+  left: calc(4px * var(--gs));
+  width: calc(42px * var(--gs));
+  /* collapse whitespace */
+  font-size: 0px;
+  opacity: 0;
+}
+
+body.game-started #funds {
+  transition: opacity 0.25s ease-in-out;
+  opacity: 1;
+}
+
+#funds .funds-label {
+  font-size: calc(7px * var(--gs));
+  line-height: calc(7px * var(--gs));
+  /* space before digits */
+  padding-right: calc(1.5px * var(--gs));
+}
+
+#game-fps,
+#game-status {
+  position: absolute;
+  display: none;
+  top: calc(4px * var(--gs));
+  right: calc(4px * var(--gs));
+  font-size: calc(7px * var(--gs));
+  vertical-align: top;
+  line-height: 100%;
+  text-align: right;
+  margin-top: calc(-0.5px * var(--gs));
+}
+
+#game-fps {
+  top: calc(22px * var(--gs));
+  width: calc(64px * var(--gs));
+  font-size: calc(5px * var(--gs));
+  color: rgba(255, 255, 255, 0.25);
+}
+
+#funds,
+#funds-count,
+#game-status {
+  vertical-align: top;
+  color: #999;
+}
+
+body.game-started #game-status {
+  display: block;
+}
+
+#funds-count {
+  position: relative;
+  display: inline-block;
+  image-rendering: optimizeQuality;
+}
+
+#funds-negative {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  transition: width 0.5s ease-in-out;
+  line-height: 50%;
+  /* errr... */
+  margin-right: -2.5px;
+}
+
+#funds-count .digit {
+  color: transparent;
+  display: inline-block;
+  width: calc(4.25px * var(--gs));
+  height: calc(8.5px * var(--gs));
+  margin-top: calc(-0.125px * var(--gs));
+  margin-right: calc(-0.33px * var(--gs));
+  opacity: 1;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  text-indent: 0;
+  /* collapse / expand, 1 <-> 10 <-> 100 */
+  transition: width 0.15s ease-in-out;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+#funds-count .digit.collapsed {
+  opacity: 0;
+  width: 0;
+}
+
+#funds-count .digit-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /**
+   * source image: #000.
+   * invert 80% -> #cc (216)
+   * invert 60% -> #99 (153)
+   */
+  /* TODO: review and stop using invert. */
+  filter: invert(0.6);
+  background: url(../../assets/image/UI/number-strip-iosevka.svg) 0 0/100% 1000%
+    repeat-y;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* "rotating" number */
+  transition: all calc(0.25s * var(--gs-frac)) ease-in-out;
+  transition-property: margin, background-position;
+  image-rendering: optimizeQuality;
+}
+
+#funds-count.no-transition .digit-wrapper {
+  transition: none;
+}
+
+#queue {
+  /* collapse whitespace */
+  font-size: 0;
+  top: 15%;
+  left: 1%;
+  position: absolute;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+#queue .progress {
+  background: #39f;
+  bottom: -1px;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#queue .queue-item {
+  background: 0 0;
+  color: #ccc;
+  display: inline-block;
+  filter: blur(8px);
+  height: 22px;
+  margin-top: 15px;
+  opacity: 0;
+  position: relative;
+  transition: 0.25s ease-out;
+  transition-property: color, width, margin, opacity, filter, transform;
+  vertical-align: top;
+  /* small letter, e.g., "T" for "Tank" */
+  min-width: 0.85em;
+}
+
+body.is-mobile #queue .queue-item {
+  /**
+   * Filters here seem to kill compositing performance in iOS Safari,
+   * and makes the whole game slow when a decent order is queued.
+   */
+  filter: none !important;
+}
+
+#queue .queue-item.queued {
+  filter: blur(0);
+  margin-top: 0;
+  opacity: 0.66;
+}
+
+#queue .queue-item.building {
+  filter: blur(0);
+  opacity: 1;
+}
+
+#queue .queue-item.complete {
+  color: #999;
+  filter: none;
+}
+
+#queue .queue-item.complete .counter {
+  filter: none;
+}
+
+#queue .queue-item.collapsing {
+  filter: blur(8px);
+  opacity: 0;
+  /* faster */
+  transition-duration: 0.33s;
+  transition-timing-function: ease-in;
+}
+
+#queue .queue-item .counter {
+  display: inline-block;
+  font-size: calc(4px * var(--gs));
+  margin-top: -60%;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  min-width: 0.8em;
+  text-shadow: 0 1px 0 #000;
+  top: 0;
+  transform: scale(1);
+  transition:
+    opacity 175ms ease-in-out,
+    filter 175ms ease-in-out;
+}
+
+#queue .queue-item.over-ten .counter {
+  margin-right: 0;
+}
+
+#queue .queue-item.has-counter .counter {
+  opacity: 1;
+}
+
+body.demo #game-fps,
+body.demo #help,
+body.demo #home-video-wrapper,
+body.demo #logo,
+body.demo #queue {
+  display: none !important;
+}
+
+body.demo #funds,
+body.demo .target-marker {
+  opacity: 0;
+}
+
+body.minimal #game-status-bar,
+body.minimal #game-tips,
+body.minimal #notification-toasts,
+body.minimal #player-status-bar {
+  /* reduced UI for home screen "attract mode" video */
+  display: none !important;
+}
+
+#player-status-bar {
+  color: #999;
+  font-size: 55%;
+  height: calc(48px * var(--gs));
+  left: 0;
+  line-height: 50%;
+  /* previously, 24px */
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 1px 0 #000;
+  top: calc(34px * var(--gs));
+  width: 100%;
+}
+
+#player-status-bar .radar-scroller {
+  position: absolute;
+  top: calc(1.75px * var(--gs));
+  left: 0;
+  box-sizing: border-box;
+  width: 0;
+  height: calc(5.5px * var(--gs));
+  border: calc(0.5px * var(--gs)) solid rgba(255, 255, 255, 0.1);
+  border-radius: calc(1.5px * var(--gs));
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#player-status-bar .radar-scroller.higher-visibility {
+  border-color: #393;
+  background-color: rgba(32, 192, 32, 0.33);
+}
+
+@media screen and (orientation: landscape) and (max-height: 480px) {
+  /* landscape + small screens, probably mobile */
+  #player-status-bar .radar-scroller {
+    border-color: #393;
+    background-color: rgba(32, 192, 32, 0.33);
+    /* square off the corners. */
+    border-radius: 0;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-height: 840px) {
+  /* up to iPhone 15 Pro Max, at least? */
+  #player-status-bar .radar-scroller {
+    border-radius: 0;
+  }
+}
+
+#top-bar li {
+  display: inline-block;
+}
+
+#fuel-bar {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 1.5px,
+    rgba(255, 255, 255, 0.2) 1.5px,
+    rgba(255, 255, 255, 0.2) 2.25px,
+    rgba(255, 255, 255, 0.2) 2.25px,
+    rgba(255, 255, 255, 0) 3px
+  );
+  opacity: 0;
+}
+
+body.loaded #fuel-bar {
+  transition: opacity 0.25s ease-in-out;
+}
+
+body.game-started #fuel-bar {
+  opacity: 1;
+}
+
+#fuel-line {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0) 1.5px,
+    #c00000 1.5px,
+    #c00000 2.25px,
+    #c00000 2.25px,
+    rgba(255, 0, 0, 0) 3px
+  );
+  image-rendering: -webkit-optimize-contrast;
+  /* hide at first */
+  transform: translate3d(-100%, 0, 0);
+}
+
+#fuel-bar,
+#fuel-line {
+  position: absolute;
+  top: calc(2px * var(--gs));
+  height: calc(5px * var(--gs));
+  overflow: hidden;
+  width: 100%;
+}
+
+#fuel-line,
+#repair-complete {
+  left: 0;
+  position: absolute;
+}
+
+#repair-complete {
+  background: url(../../assets/image/UI/status-repair-complete.png) 0 0 /
+    contain repeat-x;
+  display: none;
+  height: calc(13px * var(--gs));
+  top: calc(33px * var(--gs));
+  width: 100%;
+  z-index: 1;
+}
+
+#stats-bar {
+  position: relative;
+  padding: 0;
+  /* account for absolutely-positioned fuel line + bar */
+  top: calc(10px * var(--gs));
+  opacity: 0;
+}
+
+body.loaded #stats-bar {
+  transition: opacity 0.5s ease-in-out;
+}
+
+body.game-started #stats-bar {
+  opacity: 1;
+}
+
+ul.stats-bar {
+  /* whitespace hack */
+  font-size: 0;
+}
+
+ul.stats-bar li {
+  color: #ccc;
+  font-size: calc(7px * var(--gs));
+  position: relative;
+  text-align: left;
+}
+
+ul.stats-bar li.inventory-item:not(:last-of-type),
+ul.stats-bar li.stats-item:not(:last-of-type) {
+  /* annoying, but need to override #aa rules */
+  padding-right: calc(8px * var(--gs)) !important;
+}
+
+#stats-bar.hide-inventory li.inventory-item,
+#stats-bar.hide-keyboard-labels .letter-block,
+#stats-bar.hide-weapons-status .stats-item,
+#status-bar.hide-keyboard-labels .letter-block,
+body.is_iphone #stats-bar .letter-block,
+body.is_iphone #status-bar .letter-block {
+  /* NOTE: #stats-bar and #status-bar are both valid. :P */
+  display: none;
+}
+
+#stats-bar.hide-keyboard-labels li {
+  /* balance things nicely, since the variable-width labels are gone. */
+  text-align: center;
+}
+
+#stats-bar.hide-keyboard-labels li .weapon-count {
+  /* tighten up spacing on numbers, items will be spaced out more here */
+  margin-left: 0;
+}
+
+#stats-bar.hide-keyboard-labels li.inventory-item:not(:last-of-type),
+#stats-bar.hide-keyboard-labels li.stats-item:not(:last-of-type) {
+  /* ugh, one more override. */
+  padding-right: 12px !important;
+}
+
+ul.stats-bar li.stats-item .weapon-count {
+  display: inline-block;
+  margin-left: calc(0.075rem * var(--gs));
+  /* prevent a shift when as number counts change (for variable-width fonts) */
+  min-width: calc(0.65rem * var(--gs));
+}
+
+body.is_safari:not(.is-mobile) #ammo-count {
+  /* fix shifting on Safari, especially, with three digits in tutorial mode. */
+  min-width: calc(11px * var(--gs));
+}
+
+body.is_safari:not(.is-mobile) #bomb-count {
+  min-width: calc(9px * var(--gs));
+}
+
+#mobile-controls li.inventory-item,
+#mobile-controls li.weapons-item,
+ul.stats-bar li.stats-item .wrapper {
+  filter: grayscale(0);
+  transition:
+    filter 0.33s ease-out,
+    opacity 0.33s ease-out;
+}
+
+ul.stats-bar li.stats-item.weapon-unavailable:not(.repairing) .wrapper {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+#mobile-controls li.weapons-item.missiles:not(.weapon-unavailable),
+ul.stats-bar li.stats-item.missiles:not(.weapon-unavailable) .wrapper {
+  /* no transition while switching to/from reloading state. */
+  transition: none;
+}
+
+#mobile-controls li.weapons-item.weapon-reloading,
+ul.stats-bar li.stats-item.weapon-reloading:not(.repairing) em {
+  /* fade the missile icon while "reloading" */
+  opacity: 0.75;
+}
+
+ul.stats-bar li .double-wide {
+  display: inline-block;
+  min-width: calc(
+    0.825rem * var(--gs)
+  ); /* prevent 3 to 2 characters from causing UI shift. */
+}
+
+ul.stats-bar li.repairing em {
+  animation: 0.5s ease-in-out infinite alternate sorta-blink-repairing;
+}
+
+ul.stats-bar em {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  font-size: 0px;
+  vertical-align: middle;
+  /* scaling shenanigans - TODO: clean up. */
+  zoom: var(--gs);
+}
+
+body:not(.limited-lives-mode) #top-bar li.helicopter-item,
+body:not(.limited-lives-mode) #top-bar li.lives {
+  display: none;
+}
+
+ul.stats-bar .lives .letter-block {
+  margin-right: 3px;
+}
+
+ul.stats-bar .lives em {
+  background: url(../../assets/image/UI/status-helicopter.png) 0 0 / contain
+    no-repeat;
+  height: 4.67px;
+  margin-left: 0.5em;
+  width: 10px;
+}
+
+#lives-count {
+  display: inline-block;
+  min-width: 1.25em;
+}
+
+ul.stats-bar .infantry-count {
+  background: 0 0 !important;
+}
+
+#mobile-controls li.weapons-item a.parachute-infantry,
+.static-sprite.parachute-infantry,
+ul.stats-bar .infantry-count em {
+  background: url(../../assets/image/UI/parachute-infantry-static.png) no-repeat;
+}
+
+#mobile-controls.enemy li.weapons-item a.parachute-infantry,
+#player-status-bar.enemy .infantry-count em {
+  background: url(../../assets/image/UI/parachute-infantry-enemy-static.png) 0 0 /
+    contain no-repeat;
+}
+
+ul.stats-bar .infantry-count em {
+  background-repeat: no-repeat;
+  /* background: transparent url(../../assets/image/UI/parachute-infantry-static.png) no-repeat 0px 0px; */
+  background-size: contain;
+  height: 13px;
+  margin-right: 3px;
+  margin-top: -3px;
+  transform-origin: left;
+  width: 9px;
+}
+
+/* hackish: min-width fix for pixel shift from 1/0. Ugh. */
+#infantry-count {
+  display: inline-block;
+  min-width: calc(0.25rem * var(--gs));
+}
+
+ul.stats-bar .missiles em {
+  height: 9px;
+  min-width: 16px;
+  /* accommodate rubber chicken mode */
+  transform: rotate(-25deg);
+  width: 10px;
+}
+
+body.banana-mode ul.stats-bar .missiles em {
+  transform: rotate(14deg);
+  margin-top: -2px; /* height align tweak */
+}
+
+ul.stats-bar .missiles span.divider {
+  /* X|C|B */
+  display: inline-block;
+  min-width: calc(0.5rem * var(--gs));
+  opacity: 0.25;
+  text-align: center;
+}
+
+#mobile-controls li.weapons-item a.smart-missile,
+ul.stats-bar .missiles em {
+  background-image: url(../../assets/image/smart-missile.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 75%;
+}
+
+#mobile-controls li.weapons-item a.ammo,
+ul.stats-bar .ammo em {
+  background-image: url(../../assets/image/UI/status-ammo.png);
+  background-position: 2px 1px;
+  background-repeat: no-repeat;
+  background-size: 80%;
+}
+
+ul.stats-bar .ammo em {
+  height: 9px;
+  width: 14px;
+}
+
+/* "aimed missile" mode */
+body.aimed-missile-mode #mobile-controls li.weapons-item a.ammo,
+body.aimed-missile-mode ul.stats-bar .ammo em {
+  background-image: url(../../assets/image/missile.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+#mobile-controls li.weapons-item a.bombs,
+ul.stats-bar .bombs em {
+  background: url(../../assets/image/UI/status-bombs.png) 50% 1px/75% no-repeat;
+}
+
+ul.stats-bar .bombs em {
+  height: 11px;
+  margin-left: 1px;
+  text-indent: -32px;
+  width: 3px;
+}
+
+#fuel-line,
+.radar-scroller {
+  /**
+   * 09/2021: Chrome may benefit from explicit "layer" promotion, per dev tools.
+   * Here, green paint flashing (and thus, performance) is notably improved
+   * by carefully applying `will-change` to a number of common elements.
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/will-change
+   */
+  will-change: transform;
+  contain: strict;
+}
+
+body.rubber-chicken-mode #mobile-controls li.weapons-item a.smart-missile,
+body.rubber-chicken-mode ul.stats-bar .missiles em {
+  background: url(../../assets/image/UI/rubber-chicken-static.png) 50% 33%/16px
+    4.5px no-repeat;
+  min-width: 16px;
+}
+
+.smart-missile.banana,
+body.banana-mode #mobile-controls li.weapons-item a.smart-missile,
+body.banana-mode ul.stats-bar .missiles em {
+  /* https://www.shutterstock.com/image-vector/set-cartoon-banana-drawings-single-peeled-1205236333 */
+  background: url(../../assets/image/banana.png) 50% 0 / contain no-repeat;
+}
+
+body.original_missile_mode ul.stats-bar .missiles .alternate-missiles,
+body.original_missile_mode ul.stats-bar .missiles .divider {
+  /* hide |C|B in UI when "alternate missiles" are disabled. */
+  display: none !important;
+}
+
+.cornholio {
+  /* I am the great Cornholio! */
+  display: none;
+}
+
+#stats-endgame {
+  display: none;
+  left: 50%;
+  margin-left: -11em;
+  margin-top: 13em;
+  position: absolute;
+  width: 22em;
+}
+
+#stats-endgame table {
+  border: 1px solid #090;
+  color: #eee;
+  width: 100%;
+}
+
+#stats-endgame table td,
+#stats-endgame table th {
+  background-color: rgba(0, 153, 0, 0.25);
+  border-left: 1px solid #090;
+  min-width: 2em;
+  padding: 0.25em 0.33em;
+}
+
+#stats-endgame table thead th {
+  padding: 0.25em;
+}
+
+#stats-endgame table thead th:first-of-type {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#stats-endgame table td {
+  border-top: 1px solid #090;
+}
+
+#stats-endgame table td:first-of-type,
+#stats-endgame table th:first-of-type {
+  border-left-color: transparent;
+}
+
+#game-tips {
+  position: absolute;
+  font-family: 'Cheddar Gothic Stencil';
+  font-weight: 400;
+  top: 23.5%;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  /* tips, announcements, and game paused / resume prompts. */
+  font-size: calc(18px * var(--gs));
+  line-height: 125%;
+}
+
+body.game-over #game-tips {
+  pointer-events: auto;
+  /* show atop explosions and whatnot. */
+  z-index: 1;
+}
+
+#game-tips .game-over-tip {
+  color: #090;
+  font-family: 'EB Garamond', 'Times New Roman', serif;
+  font-size: calc(12px * var(--gs));
+  line-height: 125%;
+  font-weight: 300;
+  letter-spacing: -0.033em;
+  max-width: 26em;
+  margin: 0 auto;
+}
+
+#game-tips hr {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+#game-tips .game-start {
+  /* game over, "try again" button */
+  display: inline-block;
+  font-family: 'Cheddar Gothic Stencil';
+  background-color: rgba(0, 255, 0, 0.2);
+  font-size: calc(20px * var(--gs));
+  margin-top: calc(12px * var(--gs));
+  padding: calc(5px * var(--gs)) calc(10px * var(--gs));
+  line-height: 100%;
+  color: #fff;
+  border: calc(0.5px * var(--gs)) solid rgba(255, 255, 255, 0.2);
+  transition:
+    background-color 250ms,
+    border 250ms,
+    color 250ms,
+    filter 250ms,
+    text-shadow 250ms,
+    transform 250ms;
+  border-radius: calc(3px * var(--gs));
+  text-decoration: none;
+}
+
+body.has-gamepad.gamepad-active #game-tips .game-start:focus,
+body.has-gamepad.gamepad-active #game-tips .game-start:focus-visible,
+body.has-gamepad.gamepad-active #game-tips .generic-cta:focus,
+body.has-gamepad.gamepad-active #game-tips .generic-cta:focus-visible {
+  border: 1px solid #fff;
+  outline: 0;
+}
+
+#game-tips .game-start:hover {
+  background-color: rgba(0, 255, 0, 0.25);
+  filter: drop-shadow(0 0 calc(1px * var(--gs)) rgba(255, 255, 255, 0.5));
+}
+
+#game-tips .game-start:active {
+  filter: drop-shadow(0 0 calc(0.75px * var(--gs)) rgba(0, 255, 0, 0.75));
+  transform: scale3d(0.9, 0.9, 1);
+  transform-origin: 50% 50%;
+}
+
+#game-tips .game-start .emoji-text {
+  position: relative;
+  top: -0.1em;
+}
+
+#game-tips .tips-container {
+  border-radius: 1em;
+  color: #888;
+  display: none;
+  left: 50%;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  text-shadow: 0 1px 0 #000;
+  top: 0;
+  transform: translate3d(-50%, 0, 0);
+  width: 65%;
+}
+
+body.game-over #game-tips .tips-container {
+  top: 30%;
+}
+
+#game-paused {
+  color: #ccc;
+  display: none;
+  font-size: calc(24px * var(--gs));
+  margin-top: 10vw;
+  font-weight: 300;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 1px 0 #000;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+#game-paused p {
+  margin-top: -0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+body.game-paused #game-tips .tips-container {
+  /* hide, vs. display: none which will reset CSS animations. */
+  visibility: hidden;
+}
+
+body.game-paused #game-tips .tips-container .animation-node,
+body.game-paused #game-tips .tips-container .tip {
+  /* pause tip scrolling effect */
+  animation-play-state: paused;
+}
+
+body.game-paused #game-paused {
+  display: block;
+}
+
+body.game-paused.game-menu-open #game-paused,
+body.game-paused.prefs-modal-open #game-paused {
+  /* hide even when paused, in certain cases. */
+  display: none;
+}
+
+#game-tips .tips-container #game-tips-list {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  opacity: 1;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  transition: opacity 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+body.game-started #game-tips.active .tips-container {
+  display: block;
+  /**
+   * gradient generated via this useful tool...
+   * cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28left\%2C\%20rgba\%280\%2C0\%2C0\%2C1\%29\%205\%25\%2C\%20rgba\%280\%2C0\%2C0\%2C0\%29\%2020\%25\%2C\%20rgba\%280\%2C0\%2C0\%2C0\%29\%2050\%25\%2C\%20rgba\%280\%2C0\%2C0\%2C0\%29\%2080\%25\%2C\%20rgba\%280\%2C0\%2C0\%2C1\%29\%2095\%25\%29\%3B'
+   *
+   * 11/2023: webkit prefix may apply for some time to come; dropped as of Chrome 120.
+   * https://caniuse.com/css-masks
+   */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+#game-tips .tips-container .animation-node,
+#game-tips .tips-container .tip {
+  animation: scrollText calc(24s * var(--gs-frac)) linear;
+  font-family: 'EB Garamond', 'Times New Roman', serif;
+  font-weight: 300;
+  padding: 1px;
+  text-rendering: optimizeSpeed;
+  /**
+   * "ticker-tape" style?
+   * animation-timing-function: steps(150);
+   */
+  opacity: 0.75;
+  letter-spacing: -0.033em;
+}
+
+/* go bigger on landscape. */
+#game-tips .tips-container .animation-node {
+  height: 0;
+  left: 0;
+  /* used to trigger `onanimationend()` events for tip display. */
+  position: absolute;
+  top: -1px;
+  visibility: hidden;
+}
+
+#game-tips .tips-container .animation-node:not(.hide-on-mobile),
+#game-tips .tips-container .tip:not(.hide-on-mobile) {
+  display: inline-block;
+  min-width: 32rem;
+  /* each tip should roughly clear the screen before the next appears. */
+  width: 125%;
+}
+
+#game-tips #game-announcements {
+  color: #bbb;
+  font-size: calc(20px * var(--gs));
+  line-height: 110%;
+  font-weight: 300;
+  left: 0;
+  margin: 0 auto;
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  top: -0.125rem;
+  filter: blur(3px);
+  transform: scale3d(1.2, 1.2, 1);
+  transform-origin: 50% 50%;
+  transition: all calc(0.5s * var(--gs-frac)) ease-in-out;
+  transition-property: filter, opacity, transform;
+  width: 100%;
+  text-shadow: 0 1px 1px #000;
+}
+
+#game-tips #game-announcements p {
+  overflow: visible;
+  white-space: normal;
+}
+
+#game-tips #game-announcements img {
+  vertical-align: middle;
+}
+
+/* TODO: review and remove */
+body:not(.game-over)
+  #game-tips
+  #game-announcements
+  span:not(.hide-on-mobile):not(.inline-emoji) {
+  display: block;
+  width: 100%;
+}
+
+#game-tips #game-announcements .inline-emoji {
+  /* font may be required for consistent alignment on iOS Safari. :X */
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+  line-height: 1em;
+  vertical-align: top;
+}
+
+/* ugh, Firefox. */
+body.is_firefox #game-tips #game-announcements .inline-emoji {
+  position: relative;
+  vertical-align: baseline;
+  top: -0.05em;
+}
+
+#game-tips.has-announcement .tips-container {
+  overflow: visible;
+}
+
+#game-tips.has-announcement #game-tips-list {
+  opacity: 0;
+}
+
+#game-tips.has-announcement #game-announcements {
+  transition-delay: 667ms;
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+  filter: none;
+}
+
+#game-tips.has-announcement .announcement-text {
+  /**
+   * Balance between tall and narrow portrait, and widescreens.
+   */
+  min-width: 15em;
+  max-width: 24em;
+  padding: 0;
+  display: inline-block;
+  text-align: center;
+}
+
+body.game-paused #game-announcements {
+  visibility: hidden;
+}
+
+body.game-started #world-wrapper.incoming-smart-missile {
+  border-color: #fff;
+}
+
+#help a {
+  color: #090;
+  text-decoration: none;
+}
+
+#help a.static {
+  display: inline;
+}
+
+#help a:hover {
+  color: #fff;
+}
+
+#help a.start,
+#help.inactive a.start {
+  display: inline;
+}
+
+#player-status-bar .spacer {
+  left: calc(-4px * var(--gs));
+  padding-right: calc(5px * var(--gs));
+  position: relative;
+  /* min-width: 5% */
+  width: calc(32px * var(--gs));
+}
+
+#player-status-bar span.letter-block {
+  background-clip: padding-box;
+  background: rgba(32, 32, 32, 0.75);
+  border: calc(0.5px * var(--gs)) solid rgba(48, 48, 48, 0.33);
+  border-radius: calc(2px * var(--gs));
+  color: #777;
+  display: inline-block;
+  height: calc(10px * var(--gs));
+  line-height: calc(10px * var(--gs));
+  margin-top: calc(-1px * var(--gs));
+  min-width: calc(6px * var(--gs));
+  padding: 0 calc(3px * var(--gs));
+  text-align: center;
+  vertical-align: middle; /* align with nearby text, e.g., bomb count */
+}
+
+#player-status-bar .inventory-item a {
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  margin-top: -1px;
+  vertical-align: middle;
+  pointer-events: none;
+  /* scale these up. */
+  zoom: var(--gs);
+}
+
+#mobile-controls li.inventory-item a.missile-launcher,
+#player-status-bar .inventory-item a.missile-launcher,
+.static-sprite.missile-launcher {
+  background-image: url(../../assets/image/UI/missile-launcher-static.png);
+}
+
+#mobile-controls.enemy li.inventory-item a.missile-launcher,
+#player-status-bar.enemy .inventory-item a.missile-launcher {
+  background-image: url(../../assets/image/UI/missile-launcher-enemy-static.png);
+}
+
+#player-status-bar .inventory-item a.missile-launcher {
+  background-position: 50% 50%;
+  background-size: contain;
+  height: 9px;
+  width: 27px;
+}
+
+#mobile-controls li.inventory-item[data-for='helicopter'] {
+  display: none;
+}
+
+body.limited-lives-mode
+  #mobile-controls
+  li.inventory-item[data-for='helicopter'] {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  transform: translate3d(107%, -110%, 0);
+}
+
+/* default gamepad */
+body #mobile-controls li.inventory-item[data-for='eject'] {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  transform: translate3d(0, -110%, 0);
+}
+
+body:not(.limited-lives-mode)
+  .mobile-controls_right-aligned:not(.notch-at-right)
+  #mobile-controls
+  li.inventory-item[data-for='eject'] {
+  transform: translate3d(0, -110%, 0);
+}
+
+body.mobile-controls_right-aligned
+  #mobile-controls
+  li.inventory-item[data-for='eject'] {
+  /* right-aligned controls, non-iOS (no notch): eject at top left */
+  bottom: auto;
+  left: auto;
+  right: 2px;
+  top: 0;
+  transform: translate3d(0, -110%, 0);
+}
+
+body.has-gamepad #mobile-controls li.inventory-item[data-for='engineer'] {
+  /* default / left alignment case: stay as-is */
+  transform: none;
+}
+
+body.has-gamepad #mobile-controls li.inventory-item[data-for='eject'] {
+  /* bottom left */
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: auto;
+  transform: translate3d(0, 110%, 0);
+}
+
+body.limited-lives-mode.mobile-controls_right-aligned
+  #mobile-controls
+  li.inventory-item[data-for='helicopter'] {
+  /* right-aligned controls, non-iOS (no notch): helicopter at top right */
+  bottom: auto;
+  right: auto;
+  top: 0;
+  left: 0;
+  transform: translate3d(0, -110%, 0);
+}
+
+/* gamepad case, left or right control alignment case */
+body.limited-lives-mode.has-gamepad
+  #mobile-controls
+  li.inventory-item[data-for='helicopter'] {
+  /* right-aligned controls, non-iOS (no notch): helicopter at bottom + center */
+  bottom: 0;
+  right: auto;
+  top: auto;
+  left: 0;
+  transform: translate3d(110%, 110%, 0);
+}
+
+body.limited-lives-mode #mobile-controls li.inventory-item a.helicopter {
+  background-image: url(../../assets/image/UI/helicopter-static.png);
+  background-size: 78%;
+}
+
+body.limited-lives-mode #mobile-controls.enemy li.inventory-item a.helicopter {
+  /* enemy chopper */
+  background-image: url(../../assets/image/UI/helicopter-enemy-static.png);
+  background-size: 78%;
+}
+
+#mobile-controls li.inventory-item a.tank,
+#player-status-bar .inventory-item a.tank,
+.static-sprite.tank {
+  /* TODO: replace with new asset */
+  background-image: url(../../assets/image/UI/tank-static.png);
+}
+
+#mobile-controls.enemy li.inventory-item a.tank,
+#player-status-bar.enemy .inventory-item a.tank {
+  background-image: url(../../assets/image/UI/tank-enemy-static.png);
+}
+
+#player-status-bar .inventory-item a.tank {
+  background-size: contain;
+  height: 9px;
+  width: 29px;
+}
+
+#mobile-controls li.inventory-item a.van,
+#player-status-bar .inventory-item a.van,
+.static-sprite.van {
+  background-image: url(../../assets/image/UI/van-static.png);
+}
+
+#mobile-controls.enemy li.inventory-item a.van,
+#player-status-bar.enemy .inventory-item a.van {
+  background-image: url(../../assets/image/UI/van-enemy-static.png);
+}
+
+#player-status-bar .inventory-item a.van {
+  background-size: contain;
+  height: 9px;
+  width: 22px;
+}
+
+#mobile-controls li.inventory-item a.infantry,
+#player-status-bar .inventory-item a.infantry,
+.static-sprite.infantry {
+  background-image: url(../../assets/image/UI/infantry-static.png);
+}
+
+#mobile-controls.enemy li.inventory-item a.infantry,
+#player-status-bar.enemy .inventory-item a.infantry {
+  background-image: url(../../assets/image/UI/infantry-enemy-static.png);
+}
+
+#player-status-bar .inventory-item a.engineer,
+#player-status-bar .inventory-item a.infantry,
+.static-sprite.engineer {
+  background-size: contain;
+  height: 9px;
+  width: 8px;
+}
+
+#player-status-bar .inventory-item a.engineer {
+  background-image: url(../../assets/image/UI/engineer-static.png);
+}
+
+#player-status-bar.enemy .inventory-item a.engineer {
+  background-image: url(../../assets/image/UI/engineer-enemy-static.png);
+}
+
+#player-status-bar a {
+  /* inventory ordering */
+  filter: grayscale(0);
+  transition:
+    filter 0.33s ease-out,
+    opacity 0.33s ease-out;
+}
+
+#player-status-bar.can-not-order-engineer .engineer,
+#player-status-bar.can-not-order-infantry .infantry,
+#player-status-bar.can-not-order-missile-launcher .missile-launcher,
+#player-status-bar.can-not-order-tank .tank,
+#player-status-bar.can-not-order-van .van {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+#game-announcements div.game-over-stats-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 0.5em;
+}
+
+#game-announcements div.game-over-stats {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+  font-size: calc(6.5px * var(--gs));
+  line-height: 150%;
+  font-family: var(--monospace);
+  /* reset cheddar font shenanigans */
+  text-transform: initial;
+}
+
+#game-announcements div.game-over-stats ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+@media screen and (max-width: 480px) {
+  /* iPhone et al, narrow screens */
+  #game-announcements div.game-over-stats {
+    font-size: calc(4.5px * var(--gs));
+  }
+
+  #game-announcements div.game-over-stats ul {
+    max-width: 45%;
+  }
+}
+
+#game-announcements div.game-over-stats ul li {
+  margin: 0;
+  padding: 0;
+}
+
+#game-announcements div.game-over-stats code {
+  white-space: pre-wrap;
+  float: left;
+  line-height: 130%;
+  margin: 0 1.2em 0 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
+
+#game-announcements div.copy-game-stats-wrapper {
+  margin-top: 3px;
+}
+
+#game-announcements div.copy-game-stats-wrapper br {
+  /* hack! */
+  display: none;
+}
+
+#game-announcements div.copy-game-stats-wrapper button:not(:hover) {
+  background: rgba(0, 255, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+button.copy-game-stats {
+  display: inline-block;
+  font-family: var(--monospace);
+  letter-spacing: -0.25px;
+  font-size: 100%;
+  line-height: 100%;
+  background: rgba(0, 128, 0, 0.9);
+  border: 1px solid rgba(0, 160, 0, 0.9);
+  color: #ccc;
+  padding: calc(1px * var(--gs)) calc(2px * var(--gs));
+  border-radius: calc(2px * var(--gs));
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-right: 0;
+  min-width: auto;
+}
+
+body.game-over.you-won button.copy-game-stats {
+  color: #fff;
+}
+
+button.copy-game-stats:active {
+  background: rgba(0, 96, 0, 0.9);
+  color: #fff;
+}
+
+#notification-toasts {
+  position: absolute;
+  overflow: hidden;
+  contain: strict;
+  /**
+   * Positioning: try to avoid overlapping a few other common
+   * composited elements "all the time" (tips / shadow overlays),
+   * which guarantees this becomes another full-screen GPU layer.
+   */
+  height: 53%;
+  right: 2.05%;
+  top: 32.5%;
+  width: 25em;
+  font-size: calc(6px * var(--gs));
+  line-height: calc(8px * var(--gs));
+  pointer-events: none;
+  z-index: 2;
+}
+
+#notification-toasts.left-aligned {
+  right: auto;
+  left: 2.05%;
+}
+
+#notification-toasts.bottom-up {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.notification-toast {
+  color: #aaa;
+  opacity: 0;
+  position: relative;
+  text-align: right;
+  top: 0;
+  transition: 0.5s ease-in-out;
+  transition-property: max-height, height, margin, opacity;
+  overflow-y: hidden;
+  /* max-height as an expand/collapse feature. :tada: */
+  max-height: 0;
+  text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.75);
+}
+
+.notification-toast code {
+  display: block;
+  font-family: var(--monospace);
+  font-size: calc(4.75px * var(--gs));
+  line-height: 120%;
+  /* preserve whitespace in table, no &nbsp; tricks. */
+  white-space: pre-wrap;
+}
+
+#notification-toasts.left-aligned .notification-toast {
+  width: 100%;
+  text-align: left;
+}
+
+.notification-toast.toast-active {
+  opacity: 1;
+  /* sneaky: transition in. This "should" cover two lines. */
+  max-height: 3em;
+}
+
+.notification-toast.toast-expiring {
+  opacity: 0;
+  /* easy collapse! */
+  max-height: 0;
+}
+
+.notification-toast > span {
+  /* don't apply to inline emoji, etc. */
+  display: inline-block;
+  padding-bottom: calc(4px * var(--gs));
+  line-height: 150%;
+}
+
+#queue .fraction,
+.notification-toast .fraction {
+  /* "slash" character */
+  font-size: calc(2px * var(--gs));
+  font-style: normal;
+}
+
+#queue sup,
+.notification-toast sup.nsf {
+  font-size: 75%;
+  position: relative;
+  right: -1px;
+  /* super-script: closer to fraction "slash" */
+  top: 1px;
+}
+
+.notification-toast sup:not(.nsf) {
+  /* bump out a bit, e.g., tank[3] - multiple tanks being ordered */
+  padding-left: 0.5px;
+}
+
+#queue span.fraction-wrapper {
+  /* building queue: nudge a little */
+  position: relative;
+}
+
+#queue .queue-item.has-counter .fraction-wrapper {
+  /* hackish - so numbers don't overlap */
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: -66% 0 0 -20%;
+  display: inline-block;
+  transform: scale3d(0.9, 0.9, 1);
+  transform-origin: 50% 50%;
+  font-size: calc(5px * var(--gs));
+  line-height: 1em;
+}
+
+body.is_firefox #queue .queue-item.has-counter .fraction-wrapper {
+  /* I suspect "all webkit" is fine, but Firefox needs less margin here. */
+  margin-top: -25%;
+}
+
+#queue .queue-item.has-counter.over-ten .fraction-wrapper {
+  /* hackish - so numbers don't overlap */
+  display: inline-block;
+  transform: scale3d(0.75, 0.75, 1);
+}
+
+#queue sub,
+.notification-toast sub.nsf {
+  font-size: 75%;
+  left: -1px;
+  position: relative;
+  /* sub-script: closer to fraction "slash" */
+  top: -1px;
+}
+
+#queue sub,
+#queue sup {
+  font-size: 65%;
+}
+
+#queue sup {
+  left: 0.5px;
+  margin-left: 0;
+}
+
+#queue sub {
+  left: -0.5px;
+}
+
+#queue .fraction {
+  font-size: calc(5px * var(--gs));
+}
+
+.zone-post {
+  background: #875400;
+  border-radius: 1px;
+  bottom: 0;
+  contain: layout !important;
+  height: 6px;
+  margin-bottom: -1px;
+  margin-left: -1px;
+  overflow: visible !important;
+  width: 2px;
+}
+
+.zone-flag,
+.zone-post {
+  pointer-events: none;
+  z-index: 4;
+}
+
+.zone-flag {
+  background: rgba(0, 192, 0, 0.75);
+  border: 0.5px solid hsla(0, 0%, 100%, 0.1);
+  border-radius: 1px;
+  font-size: 4px;
+  left: 0;
+  line-height: 4px;
+  padding: 1px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  vertical-align: middle;
+}
+
+.zone-post .zone-flag {
+  font-size: 6px;
+  left: 50%;
+  line-height: 6px;
+  padding: 1px 3px;
+  top: 0;
+  transform: translate3d(-50%, -100%, 0);
+}
+
+.target-dot {
+  background: #c00;
+  border: 0.5px solid #000;
+  border-radius: 2px;
+  height: 2px;
+  right: 0;
+  width: 2px;
+}
+
+.tank .target-dot {
+  top: 1px;
+}
+
+.target-marker {
+  background: #c00;
+  border-bottom: 0 solid transparent;
+  --height: calc(1.5px * var(--gs));
+  border-bottom-left-radius: var(--height);
+  border-bottom-right-radius: var(--height);
+  height: var(--height);
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  margin-bottom: calc(var(--height) * -2);
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  will-change: transform;
+}
+
+.target-marker.transition-active {
+  /* set while repositioning, moving to a new target */
+  transition-property: width, opacity;
+}
+
+.target-marker.radar-jammed {
+  /* effectively hidden */
+  background: 0 0;
+}
+
+.target-ui.disabled,
+body.game-over .target-ui {
+  opacity: 0;
+}
+
+body.radar_jammed .target-marker {
+  /* need to override inline style :X */
+  opacity: 0 !important;
+}
+
+/* end of battle (campaign mode) medals */
+#medals {
+  position: relative;
+  margin: 12px auto 0;
+  font-size: 0px;
+  line-height: 0;
+}
+
+#medals .column-spacer,
+#medals .medal,
+#medals .medal-spacer {
+  /* original medal width x height: 35px x 44px */
+  /* this works out so medals roughly overlay the envelope nicely, if they have to. */
+  position: relative;
+  display: inline-block;
+  width: calc(35px * var(--gs) * 0.72);
+  /* enforce aspect ratio, if width is constrained */
+  aspect-ratio: 0.795;
+  /* ensure that on a narrow, tall window, things still fit without wrapping. */
+  max-width: 9.5%;
+  margin: calc(2px * var(--gs) * 0.72);
+  margin-top: 1px;
+  margin-left: 0;
+  padding: 1px;
+}
+
+#medals .medal {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: scale3d(3, 3, 1);
+  filter: blur(5px);
+  opacity: 0;
+  /* overshoot target a bit, "bounce" elastic ease back in. */
+  transition: 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition-property: transform, filter, opacity;
+}
+
+#medals.active .medal {
+  transform: scale3d(1, 1, 1);
+  filter: none;
+  opacity: 1;
+}
+
+#medals .medal-1 {
+  background-image: url(../../assets/image/UI/medal-1.png);
+}
+
+#medals .medal-2 {
+  background-image: url(../../assets/image/UI/medal-2.png);
+}
+
+#medals .medal-3 {
+  background-image: url(../../assets/image/UI/medal-3.png);
+}
+
+#medals .medal-4 {
+  background-image: url(../../assets/image/UI/medal-4.png);
+}
+
+#medals .medal-5 {
+  background-image: url(../../assets/image/UI/medal-5.png);
+}
+
+#medals .medal-6 {
+  background-image: url(../../assets/image/UI/medal-6.png);
+}
+
+body.game-over #pointer {
+  opacity: 0;
+}
+
+/* for mobile, and gamepad use. */
+#pointer {
+  /* cross image */
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAJklEQVR4AWNAAv/BECv4/5/WUv9hECqFgEABTABWhEcXPR2PJwwBYldZpwyOHyUAAAAASUVORK5CYII=)
+    50% 50% / contain no-repeat;
+  display: none;
+  left: 0;
+  position: absolute;
+  top: 0;
+  --size: calc(6px * var(--gs));
+  --halfSize: calc(var(--size) * -0.5);
+  width: var(--size);
+  height: var(--size);
+  margin: var(--halfSize) 0 0 var(--halfSize);
+  /* sit on top of everything */
+  z-index: 11;
+}
+
+#pointer.enabled {
+  display: block;
+}
+
+@keyframes tracking-active {
+  0%,
+  to {
+    transform: translate3d(-50%, -50%, 0) scale3d(0.75, 0.75, 1);
+  }
+
+  50% {
+    transform: translate3d(-50%, -50%, 0) scale3d(0.33, 0.33, 1);
+  }
+}
+
+@keyframes parachute-swing {
+  0% {
+    transform: rotate3d(0, 0, 1, -12.5deg);
+  }
+
+  to {
+    transform: rotate3d(0, 0, 1, 12.5deg);
+  }
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes scrollText-safari-scale {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.5, 0.5);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0) scale(0.5, 0.5);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink-bg {
+  50% {
+    background-color: #fff;
+    opacity: 0.75;
+  }
+}
+
+@keyframes blink-warning {
+  50% {
+    background-color: #c33;
+    border-color: #c33;
+  }
+}
+
+@keyframes sorta-blink {
+  50% {
+    opacity: 0.65;
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+}
+
+@keyframes sorta-blink-alt {
+  50% {
+    background-color: rgba(27, 107, 27, 0.5);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+}
+
+@keyframes sorta-blink-repairing {
+  50% {
+    opacity: 0.65;
+    transform: scale3d(1.1, 1.1, 1.1) rotate(-15deg);
+  }
+}
+
+@keyframes sorta-blink-subtle {
+  50% {
+    opacity: 0.5;
+    filter: grayscale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale3d(0.66, 0.66, 1);
+  }
+
+  to {
+    transform: scale3d(0.33, 0.33, 1);
+  }
+}

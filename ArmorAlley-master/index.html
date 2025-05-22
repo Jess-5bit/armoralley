@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #000">
+  <head>
+    <title>Armor Alley: Remastered</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Armor Alley: Remastered - a web browser version of the RTS-style 'Armor Alley' game originally released for Macintosh and MS-DOS computers." />
+    <meta
+      name="keywords"
+      content="Armor Alley, JavaScript, HTML, DHTML, multiplayer, network browser game, animation, CSS3, arcade, retro, browser game, MS-DOS, Macintosh Plus, Mac Classic" />
+    <meta name="author" content="Scott Schiller" />
+    <link rel="shortcut icon" href="dist/image/app-icons/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="dist/image/app-icons/favicon-32x32.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="dist/image/app-icons/favicon-16x16.png" />
+    <link rel="manifest" href="dist/manifest.json" />
+    <link
+      rel="mask-icon"
+      href="dist/image/app-icons/safari-pinned-tab.svg"
+      color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="application-name" content="Armor Alley: Remastered" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@schill" />
+    <meta property="twitter:creator" content="@schill" />
+    <meta property="twitter:domain" content="play.armor-alley.net" />
+    <meta property="og:title" content="Armor Alley" />
+    <meta property="og:url" content="https://play.armor-alley.net" />
+    <meta
+      property="og:description"
+      content="An online version of the RTS-style 'Armor Alley' game originally released for Macintosh and MS-DOS computers." />
+    <meta
+      property="og:image"
+      content="https://play.armor-alley.net/dist/image/app-images/armor-alley_game_image_1920x1080_v3.webp" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" />
+    <meta property="og:video" content="https://www.youtube.com/v/6wEMcssFJ-E" />
+    <style>
+      body:not(.loaded) {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        padding: 0px;
+        margin: 0px;
+        background-image: url(data:image/gif;base64,R0lGODlhHgAeAPECAAAAAP///wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFDwACACwAAAAAHgAeAAACZJSPoMvo75gEsIrJgg7NGrxs3OKBmbgplRmimhqxrftShzzT8IcDdGrj4X41YY8I7OV+yhOyudRBp9QhcgS9YptaarfJe/YSPqKSLMahzeMYU7Yqu9QW53biMYpY+RioH/dnUQAAIfkEBQ8AAgAsAgACABoAGgAAAlGUBanLeo+aXDDO6w7ewKQQcA24kGIZKqDJrem3ni7sslKN11jOx0wPfKmCQBqxZzzqfsolqikcNXc5o8xnFc2GJ5S3C0t4wIwHuQw5V8bgRwEAIfkEBQ8AAgAsAgACABoAGgAAAkqUb6GB7b/YmykuSu3FUAcAhiLoeN+IThqadhE7Yi88mjMd2gsu6goPDAqHQ98JaBQmgxEM0jJ5Nh9SaKM65TRM2pKnu92AvYpJAQAh+QQFDwACACwCAAIAGgAaAAACR5SPFsvpr9iC9MgbqsPSgQ9wHEiWIlam4Bmobni+LyrPV10vOK7v/g8M9oKmFnF1O9KALGZsx5LwokPA5qRJsLIQDPfh1RQAADs=);
+        background-size: 20px 20px;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+      }
+      body:not(.loaded) *:not(.aa-loader) {
+        /* Floppy support: Hide all except loader UI during "boot." */
+        visibility: hidden;
+      }
+    </style>
+    <!--
+      ╭────────────────────────────────────────────────────────────────────╮
+      │                                                                    │
+      │                                       ▄██▀                         │
+      │                                     ▄█▀                            │
+      │                     ▄████▄▄▄▄▄▄▄▄▄ █▀▄▄▄▄▄▄▄▄▄▄▄                   │
+      │                                 ▄█████▄▄▄▄  ▀▀▀                    │
+      │                            ▄████████████████▄                      │
+      │                █▄         ▀████████████████████▄                   │
+      │                ▀█▄       ▄██████████████████████                   │
+      │                 ███▄▄▄████████████████████████▀                    │
+      │                ▀█████████▀▀▀▀▀▀▀▀███▀▀█▀▀▀▀█▀                      │
+      │                 █▀                ██▘▘ ██▘▘                        │
+      │                                                                    │
+      │                                                                    │
+      │      ████▙   ▀████▌████▙  ▀█████   █████▀ ▄██████▄ ▀████▌████▙     │
+      │     ▕█████▏   ████▌ ████▌  ▐████▌  ████▌ ████▎▐███▊ ████▌ ████▌    │
+      │     ▐▐████▎   ████▌ ████▌   █████ ▌████▌▐███▊  ████▏████▌ ████▌    │
+      │     █▌████▋   ████▌▗████▘   ▌█████▌████▌████▊  ████▌████▌▗████▘    │
+      │    ▐█▌▐████   ████▌████▘    ▌█████▌████▌████▊  ████▌████▌████▘     │
+      │    ██ ▄████▎  ████▌▝███▙    █▐████ ████▌████▊  ████▌████▌▝███▙     │
+      │   ▐█▌██████▌  ████▌ ████▌  ▕█ ███▌ ████▌▐███▊  ████ ████▌ ████▌    │
+      │   ███  ▐████  ████▌ ████▌▗▋▐█ ▐██  ████▌ ████▎▐███▊ ████▌ ████▌▗▋  │
+      │  ▄███▄ ▄████▌▄█████▄▀████▀▄██▄ █▌ ▄█████▄ ▀██████▀ ▄█████▄▀████▀   │
+      │                                                                    │
+      │       ████▙   ▀█████▀    ▀█████▀     ▀████▐███▋▀██████▀ ▀████▀ TM  │
+      │       █████▏   █████      █████       ████  ▝█▋ ▝████▙   ▝██▘      │
+      │      ▐▐████▎   █████      █████       ████   ▝▋  ▝████▙  ▗█▘       │
+      │      █▌████▋   █████      █████       ████ ▗█     ▝████▙▝█▘        │
+      │     ▐█▌▐████   █████      █████       ████▐██      ▝█████          │
+      │     ██ ▄████▎  █████      █████       ████ ▝█       █████          │
+      │    ▐█▌██████▌  █████    ▗▋█████    ▗▋ ████   ▗▋     █████          │
+      │    ███  ▐████  █████  ▗██▌█████  ▗██▌ ████  ▗█▌     █████          │
+      │   ▄███▄ ▄████▌▄█████▐████▌█████▌████▌▄████▐███▌   ▄███████▄        │
+      │                                                                    │
+      │                     [  R E M A S T E R E D  ]                      │
+      │                                                                    │
+      ╰────────────────────────────────────────────────────────────────────╯
+      A browser-based interpretation of the Macintosh + MS-DOS releases of Armor Alley.
+
+      Online game
+      https://armor-alley.net/
+
+      Quick video overview (3m 45s)
+      https://youtu.be/oYUCUvg02rY
+
+      Source code
+      https://github.com/scottschiller/ArmorAlley/
+
+      Original development and history (2013)
+      https://schillmania.com/content/entries/2013/armor-alley-web-prototype/
+
+      Original game Copyright (C) 1989 - 1991 Information Access Technologies.
+      https://en.wikipedia.org/wiki/Armor_alley
+
+      Images, text and other portions of the original game used with permission under an ISC license.
+      Original sound effects could not be re-licensed; modern replacements used from freesound.org.
+
+      New game provided under the Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0) License:
+      https://creativecommons.org/licenses/by-nc/3.0/
+
+      General disclaimer: This is a fun personal side project. The code could be tightened up a bit.
+
+      This release:     V3.0.2025xxxx WORK IN PROGRESS
+      Previous release: V2.01.20231107, V1.6.20220201
+      Original release: V1.0.20131031
+
+      For revision history, see README.md and CHANGELOG.txt.
+
+    -->
+    <!-- full-bleed in iOS landscape view, including the notch -->
+    <script>
+      // HACK: don't apply <meta> viewport for iPad, messes with scaling of modals before rotation in portrait.
+      (function () {
+        let ua = navigator.userAgent;
+        if (ua.match(/safari/i) && ua.match(/chrome|edg|iphone/i)) {
+          let m = document.createElement('meta');
+          m.name = 'viewport';
+          m.content =
+            'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover user-scalable=no';
+          (document.head || document.documentElement).appendChild(m);
+        }
+      })();
+    </script>
+    <meta name="apple-mobile-web-app-title" content="Armor Alley: Remastered" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link
+      rel="apple-touch-startup-image"
+      href="dist/image/app-images/armor_alley_game_image_512x512.png" />
+    <script>
+      (() => {
+        // "version" string for loading assets.
+        window.aaVersion = 'V20250207';
+
+        let wl = window.location;
+        let wlhref = wl.href;
+        let wlhost = wl.host;
+
+        // ?prod=1 to force production build, loading assets from dist/ rather than src/
+        let forceProd = wlhref.match(/prod=1/i);
+
+        let isProdHost = wlhost.match(/armor-alley\.net/i);
+
+        // cases where assets are loaded from dist/ - including floppy disk build
+        let isProd = isProdHost || forceProd || window.aaFloppy;
+
+        // For testing in production
+        let noVersion = wlhref.match(/noversion/i);
+
+        if (!isProdHost || noVersion) {
+          // Versioning is applicable on the production site, e.g., aa.js.V20250101
+          // Without a custom .htaccess or similar rule, you'll get 404s.
+          window.aaVersion = '';
+        }
+
+        function loadJS(url, onerror) {
+          if (!url) return;
+          let s = document.createElement('script');
+          s.fetchpriority = 'high';
+          s.type = 'module';
+          if (onerror) {
+            s.onerror = (e) => {
+              onerror();
+              s.remove();
+              s.onerror = null;
+              s = null;
+            };
+          }
+          s.src = isProd && aaVersion ? `${url}.${aaVersion}` : url;
+          (document.head || document.documentElement).appendChild(s);
+        }
+
+        /**
+         * Try for distributable / compressed version first, with fallback
+         * to the uncompressed, raw source module version of the game.
+         *
+         * This is handy if you just want to download and play the game
+         * on localhost:8080 etc., without having to do a full npm build.
+         */
+        const bootFile = 'dist/js/aa-boot_bundle.js';
+        const bootFileSrc = 'src/js/aa-boot.js';
+
+        function maybeSwap(el, attr, pOld, pNew) {
+          if (!el[attr].match(pOld)) return;
+          el[attr] = el[attr].replace(pOld, pNew);
+        }
+
+        function bootDev() {
+          isProd = false;
+
+          // allow versioning if running dev, but ON production.
+          if (!isProdHost || noVersion) window.aaVersion = '';
+
+          // force "development", load all assets from source.
+          window._aaMissingDist = true;
+
+          // dirty: swap image + related sources in HTML, too; dist/ -> assets/
+          document.querySelectorAll('img, link').forEach((el) => {
+            maybeSwap(
+              el,
+              el.nodeName === 'IMG' ? 'src' : 'href',
+              /dist\//i,
+              'assets/'
+            );
+          });
+
+          loadJS(bootFileSrc);
+        }
+
+        let docReady = !!document.readyState?.match?.(/interactive|complete/i);
+
+        if (isProd) {
+          // Production: boot from dist/ version first, with fallback.
+          loadJS(bootFile, () => {
+            console.info(`Switching to dev mode, loading ${bootFileSrc}.`);
+            bootDev();
+          });
+        } else {
+          // Dev: boot from src/ - wait for DOM ready
+          if (docReady) {
+            bootDev();
+          } else {
+            window.addEventListener('DOMContentLoaded', bootDev);
+          }
+        }
+      })();
+    </script>
+  </head>
+  <!-- While running: Remove "game-paused" class to see the full game UI, or add nopause=1 to URL. -->
+  <body style="overflow: hidden">
+    <div id="home-video-wrapper">
+      <video
+        id="home-menu-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        tabindex="-1"
+        width="100vw">
+        <!-- <source> will be assigned here based on format support, resolution, and 30 vs. 60 FPS options. -->
+      </video>
+    </div>
+
+    <div id="tv-display">
+      <div class="tv-screen-container"></div>
+      <div id="tv"></div>
+    </div>
+
+    <!-- To reduce "Cumulative Layout Shift", initially hide until first resize / scale / layout. -->
+    <div id="aa" style="visibility: hidden">
+      <div id="world-wrapper">
+        <div id="world" class="welcome">
+          <div id="battlefield">
+            <!-- world with terrain elements, vehicles, etc., lives here. -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pointer"></div>
+
+    <div id="notification-toasts"></div>
+
+    <div id="game-tips">
+      <div id="game-announcements"></div>
+      <div class="tips-container">
+        <ul id="game-tips-list">
+          <!-- 100 tips from the original game -->
+          <li>Throw bombs on emerging enemies</li>
+          <li>Click to change direction</li>
+          <li>Super bunkers hold 5 men</li>
+          <li>Tanks can kill men in some bunkers</li>
+          <li>Your practice copters are tougher</li>
+          <li>Enemy ground forces move towards your base</li>
+          <li>Center the cursor to move slow</li>
+          <li>Bars across the screen mean you are ready</li>
+          <li>Anti-aircraft guns only fire at their enemies</li>
+          <li>Capture the enemy end bunker for funds</li>
+          <li>Waste enemy bombs by dodging under him</li>
+          <li>Bullets are more effective on men and missiles</li>
+          <li>Stop your copter to shoot down missiles</li>
+          <li>Drop paratroopers just before doors</li>
+          <li>The enemy watches your money</li>
+          <li>The enemy is a thief</li>
+          <li>Try hiding behind clouds</li>
+          <li>Beware of lightning!</li>
+          <li>Don't burn the trees</li>
+          <li>Keep firing to delay your next helicopter</li>
+          <li>Balloons chase paranoids</li>
+          <li>Bomb the enemy copter</li>
+          <li>Destroy the enemy vans and tanks</li>
+          <li>Destroy infantry with tanks</li>
+          <li>Destroy tanks with your helicopter</li>
+          <li>Destroy helicopters with missiles</li>
+          <li>Attack guns from either side</li>
+          <li>Stop missiles with paratroopers</li>
+          <li>Bomb guns while flying by</li>
+          <li>Never believe everything you read</li>
+          <li>Drop paratroopers near guns</li>
+          <li>Drop paratroopers over bunkers</li>
+          <li>Use men &amp; tanks to take bunkers</li>
+          <li>Men can take out guns</li>
+          <li>Fight over enemy troops</li>
+          <li>Don't tailgate the enemy</li>
+          <li>Sometimes a strategic retreat is in order</li>
+          <li>Guns &amp; bombardiers watch your speed</li>
+          <li>Dodge bombs left-to-right</li>
+          <li>Dodge bullets up-and-down</li>
+          <li>Don't fly in straight lines</li>
+          <li>Avoid floating elements</li>
+          <li>Avoid enemy balloons</li>
+          <li>Fly high for a superior combat position</li>
+          <li>Outrun missiles by moving up and down</li>
+          <li>Missiles turn slowly</li>
+          <li>Beware of shrapnel</li>
+          <li>Find places to hide from the enemy</li>
+          <li>Hide behind paratroopers</li>
+          <li>Hide behind balloons</li>
+          <li>Run missiles into bunkers</li>
+          <li>Hide in bunkers</li>
+          <li>Hide in your base</li>
+          <li>Lead missiles into barriers</li>
+          <li>Lead neutral missiles into enemy targets</li>
+          <li>Build more convoys to win</li>
+          <li>Experiment with convoys</li>
+          <li>Don't fight over your troops with your copter</li>
+          <li>Have backup convoys - Plan B, C, etc.</li>
+          <li>Defend your convoys from enemy equipment</li>
+          <li>Protect your van with ground &amp; air support</li>
+          <li>Use missile trucks to attack &amp; delay the enemy</li>
+          <li>Hold strategic positions on the field</li>
+          <li>Paratroopers train to capture &amp; destroy</li>
+          <li>The enemy is to the right</li>
+          <li>What is the most useful piece on the field?</li>
+          <li>The enemy saves up for convoys, too</li>
+          <li>Keep one helicopter in reserve</li>
+          <li>One man can do the same work as many</li>
+          <li>There are different types of guns</li>
+          <li>Low fuel means low fuel</li>
+          <li>Smoke is a dead giveaway</li>
+          <li>Letting the enemy retreat is a strategy</li>
+          <li>Avoid engaging the enemy</li>
+          <li>Missiles are precious</li>
+          <li>Combat and bombing go hand in hand</li>
+          <li>If you can hit it, it's not yours</li>
+          <li>To win, a van must reach the enemy base</li>
+          <li>Try adjusting the game speed</li>
+          <li>Customize commands with 'Set Controls'</li>
+          <li>You can buy more helicopters with 20 funds</li>
+          <li>Use the landing pad to refuel and rearm</li>
+          <li>Enter the enemy territory for more funds</li>
+          <li>Engineers rebuild guns</li>
+          <li>The enemy doesn't cheat</li>
+          <li>Tank flamethrowers clean out bunkers</li>
+          <li>Landing conserves fuel</li>
+          <li>Vans carry radar jamming equipment</li>
+          <li>Damaged guns shoot slowly</li>
+          <li>Guns repair quickly</li>
+          <li>Men repair helicopters &amp; bunkers</li>
+          <li>Tanks &amp; guns repair themselves</li>
+          <li>Men rebuild balloons</li>
+          <li>Infantry carry grenades</li>
+          <li>Flame burns both sides</li>
+          <li>The enemy has equivalent equipment</li>
+          <li>The copter can fly with precision</li>
+          <li>The game can be suspended</li>
+          <li>Helicopters are very expensive</li>
+
+          <!-- New additions -->
+          <li>Clouds can be dangerous</li>
+          <li>The enemy knows how to hide, too</li>
+          <li>
+            Beware the wily rubber <b><u>c</u></b
+            >hicken
+          </li>
+          <li>Tired of regular missiles? Try "c" or "b" instead of "x"</li>
+          <li>Don't eat yellow snow</li>
+          <li>Clouds don't typically smoke</li>
+        </ul>
+      </div>
+
+      <div id="game-paused">
+        <p class="hide-on-mobile">
+          <span class="resume-prompt">Game paused while in background</span>
+          <span class="resume-prompt">Aww, you were just about to win!</span>
+          <span class="resume-prompt"
+            >Work can wait. This battle needs to be won.</span
+          >
+          <span class="resume-prompt">Stop reading, and start playing!</span>
+          <span class="resume-prompt">Hey, where'd you go!?</span>
+          <span class="resume-prompt">For a good time, click here.</span>
+          <span class="resume-prompt"
+            >Aww, the fun part was just about to happen.</span
+          >
+          <span class="resume-prompt"
+            >What's going to happen next!? Click here to find out!</span
+          >
+        </p>
+        <p class="mobile-only">Tap to resume</p>
+      </div>
+    </div>
+
+    <canvas id="battlefield-canvas"></canvas>
+
+    <div id="mobile-controls-placeholder"></div>
+
+    <div id="top-bar">
+      <div id="game-status-bar">
+        <div id="radar-container">
+          <div id="radar">
+            <!-- radar items go here -->
+          </div>
+          <canvas id="radar-canvas"></canvas>
+        </div>
+
+        <div id="funds">
+          <span class="funds-label"
+            >Funds: <span id="funds-negative">-</span></span
+          >
+          <div id="funds-count">
+            <div class="digit"><div class="digit-wrapper"></div></div>
+            <div class="digit"><div class="digit-wrapper"></div></div>
+            <div class="digit"><div class="digit-wrapper"></div></div>
+          </div>
+        </div>
+
+        <div id="game-fps">fps: <span id="fps-count">&infin;</span></div>
+        <div id="game-status">
+          <!-- score, bonus, level + difficulty -->
+        </div>
+      </div>
+
+      <div id="player-status-bar">
+        <div id="fuel-bar"></div>
+        <div id="fuel-line"></div>
+
+        <ul id="stats-bar" class="stats-bar">
+          <li class="inventory-item">
+            <span class="letter-block">M</span>
+            <a
+              href="#"
+              onclick="return false"
+              oncontextmenu="return false"
+              onclick="return false"
+              data-keyMap="missileLauncher"
+              title="Missile launcher (3 funds)"
+              class="missile-launcher"></a>
+          </li>
+
+          <li class="inventory-item">
+            <span class="letter-block">T</span>
+            <a
+              href="#"
+              onclick="return false"
+              oncontextmenu="return false"
+              onclick="return false"
+              data-keyMap="tank"
+              title="Tank (4 funds)"
+              class="tank"></a>
+          </li>
+
+          <li class="inventory-item">
+            <span class="letter-block">V</span>
+            <a
+              href="#"
+              onclick="return false"
+              oncontextmenu="return false"
+              onclick="return false"
+              data-keyMap="van"
+              title="Van (2 funds)"
+              class="van"></a>
+          </li>
+
+          <li class="inventory-item">
+            <span class="letter-block">I</span>
+            <a
+              href="#"
+              onclick="return false"
+              oncontextmenu="return false"
+              onclick="return false"
+              data-keyMap="infantry"
+              title="Infantry (5 funds)"
+              class="infantry"></a>
+          </li>
+
+          <li class="inventory-item">
+            <span class="letter-block">E</span>
+            <a
+              href="#"
+              onclick="return false"
+              oncontextmenu="return false"
+              onclick="return false"
+              data-keyMap="engineer"
+              title="Engineers (5 funds)"
+              class="engineer"></a>
+          </li>
+
+          <li class="spacer">
+            <div id="bnb-now-playing">
+              <div class="pow beavis"></div>
+              <div class="pow butthead"></div>
+            </div>
+            <span id="spinner" class="mac-system-spinner"></span>
+          </li>
+
+          <li class="stats-item lives">
+            <span class="letter-block">H</span>
+            <em>Lives:</em> <span id="lives-count">&infin;</span>
+          </li>
+
+          <li class="stats-item infantry-count">
+            <span class="letter-block">Space</span>
+            <span class="wrapper">
+              <em>Infantry:</em> <span id="infantry-count">1</span>
+            </span>
+          </li>
+
+          <li class="stats-item missiles">
+            <span class="letter-block"
+              >X<span class="alternate-missiles"
+                ><span class="divider">|</span>C<span class="divider">|</span
+                >B</span
+              ></span
+            >
+            <span class="wrapper">
+              <em>Smart Missiles:</em>
+              <span id="missile-count" class="weapon-count">2</span>
+            </span>
+          </li>
+
+          <li class="stats-item ammo">
+            <span class="letter-block">Shift</span>
+            <span class="wrapper">
+              <em>Ammo:</em>
+              <span id="ammo-count" class="weapon-count double-wide">64</span>
+            </span>
+          </li>
+
+          <li class="stats-item bombs">
+            <span class="letter-block">Z</span>
+            <span class="wrapper">
+              <em>Bombs:</em>
+              <span id="bomb-count" class="weapon-count double-wide">10</span>
+            </span>
+          </li>
+        </ul>
+
+        <div id="repair-complete"></div>
+      </div>
+    </div>
+
+    <div id="bottom">
+      <div id="queue"></div>
+
+      <div id="message-box">
+        <form id="message-form" action="." method="get" autocomplete="off">
+          <!-- note: data-gramm is for Grammarly. -->
+          <input
+            id="message-form-input"
+            name="message_text"
+            type="text"
+            placeholder="ENTER to chat, ESC to exit."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            data-gramm="false" />
+        </form>
+      </div>
+
+      <div id="help">
+        <span id="network-status">
+          <span id="lock-step-indicator" class="mac-system-spinner"></span>
+          <span id="network-info"></span
+          ><span id="lights"><span class="sub-sprite"></span></span>
+          <span class="pipe">|</span>
+        </span>
+        <span>
+          <a id="game-options-link" href="#" data-ignore-touch="true"
+            >options</a
+          >
+        </span>
+        <span id="exit">
+          <span class="exit-pipe">|</span>
+          <a
+            href="./"
+            onclick="return window.aa.exit()"
+            title="Exit (reload required)"
+            data-ignore-touch="true"
+            class="exit"
+            >exit</a
+          >
+        </span>
+      </div>
+    </div>
+
+    <div id="envelopes-placeholder"></div>
+
+    <div id="tutorial-placeholder"></div>
+
+    <div id="editor-placeholder"></div>
+
+    <div id="world-noise-overlay">
+      <div class="noise"></div>
+    </div>
+
+    <div id="game-menu-wrapper">
+      <div id="logo">
+        <h1>Armor Alley</h1>
+        <!-- ugh. :X -->
+        <div class="logo-wrapper-wrapper">
+          <div class="logo-wrapper">
+            <img
+              id="logo-image"
+              src="dist/image/UI/armor-alley-wordmark.svg"
+              alt="Armor Alley wordmark"
+              width="1062" />
+            <div class="logo-overlay-cutout">
+              <div id="logo-gradient" class="logo-overlay"></div>
+              <div class="logo-overlay-shadow"></div>
+            </div>
+            <div class="logo-overlay-cutout">
+              <div class="logo-overlay-highlight"></div>
+            </div>
+          </div>
+        </div>
+        <div id="mtv-bnb-in" style="visibility: hidden"></div>
+        <div id="bnb-vs" style="visibility: hidden"></div>
+        <div id="version-info"></div>
+      </div>
+
+      <!-- "auto-start" (campaign mode) screen: show this on mobile / touch devices. -->
+      <button
+        type="button"
+        id="start-game-button-mobile"
+        data-action="start-game"
+        class="game-start large mobile-only">
+        START <span data-action="start-game" class="emoji-text">🚁</span>
+      </button>
+      <p id="start-game-mobile-hint">Tap the screen to enable sound.</p>
+
+      <div id="game-menu" style="visibility: hidden">
+        <h2
+          id="game-subtitle"
+          title-bnb="Uh-huh huh huh huh... 'Hard.' Heh heh, m-heh. Boioioioiiinngg.">
+          A modern remake of the classic 1990 Mac + PC game.
+        </h2>
+        <form
+          id="game-menu-form"
+          action="."
+          method="get"
+          onsubmit="return false">
+          <div
+            id="game-level-wrapper"
+            data-glow-spread="90"
+            style="display: inline-block"
+            class="mac-classic">
+            <div
+              style="position: relative; display: inline-block"
+              class="glow-item">
+              <select
+                id="game_level"
+                name="level"
+                tabindex="0"
+                aria-label="Battle:"
+                data-action="select-level">
+                <optgroup label="New? Start here. ↴">
+                  <option value="Tutorial">Tutorial</option>
+                </optgroup>
+                <optgroup label="Original Campaign Battles">
+                  <option value="Cake Walk">Cake Walk</option>
+                  <option value="One-Gun">One-Gun</option>
+                  <option value="Sucker Punch">Sucker Punch</option>
+                  <option value="Airborne">Airborne</option>
+                  <option value="Two-Gun">Two-Gun</option>
+                  <option value="Super Bunker">Super Bunker</option>
+                  <option value="Scrapyard">Scrapyard</option>
+                  <option value="Blind Spot">Blind Spot</option>
+                  <option value="Wasteland">Wasteland</option>
+                  <option value="Midnight Oasis">Midnight Oasis</option>
+                </optgroup>
+                <optgroup label="Network Game Battles">
+                  <option value="Cavern Cobra">Cavern Cobra</option>
+                  <option value="Desert Sortie">Desert Sortie</option>
+                  <option value="First Blood">First Blood</option>
+                  <option value="Network Mania">Network Mania</option>
+                  <option value="Rescue Raiders">Rescue Raiders</option>
+                  <option value="Midpoint">Midpoint</option>
+                  <option value="Slithy Toves">Slithy Toves</option>
+                  <option value="Tanker's Demise">Tanker's Demise</option>
+                  <option value="WindStalker">WindStalker</option>
+                  <option value="Sandstorm">Sandstorm</option>
+                  <option value="Rainstorm">Rainstorm</option>
+                  <option value="Balloon Fun">Balloon Fun</option>
+                </optgroup>
+                <!--
+              <optgroup label="Practice Battles">
+                <option value="Demo 1">Demo 1</option>
+                <option value="Demo 2">Demo 2</option>
+                <option value="Demo 3">Demo 3</option>
+                <option value="Demo 4">Demo 4</option>
+              </optgroup>
+            -->
+              </select>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            id="start-game-button"
+            data-action="start-game"
+            data-title="Play the original game, with a variety of battles and difficulties."
+            data-glow-spread="120"
+            class="game-start large glow-item">
+            Start <span data-action="start-game" class="emoji-text">🚁</span>
+          </button>
+
+          <div id="game-buttons">
+            <button
+              type="button"
+              id="whats-new-button"
+              data-title="What's new: Features, bug fixes and more."
+              class="large glow-item"
+              data-action="whats-new">
+              <span class="emoji-text">🚧</span>
+              <!--
+              <span class="sub-text">01/2025</span>
+              -->
+            </button>
+            <button
+              type="button"
+              id="game-options-button"
+              data-title="General settings. Access in-game via ESC or options link."
+              class="large glow-item"
+              data-action="game-options">
+              <span class="emoji-text">🛠️</span><span id="network-pipe">|</span>
+            </button>
+            <button
+              type="button"
+              id="start-network-game"
+              data-action="start-network-game"
+              data-title="Play with your best friend, or against your worst enemy online. *NOTE: Somewhat experimental."
+              value="network"
+              aria-label="Start network game"
+              class="large network glow-item">
+              <span class="button-icon network-icon"></span>
+            </button>
+            <button
+              type="button"
+              id="start-editor-button"
+              data-action="start-editor"
+              data-title="Modify the currently-selected battle. *NOTE: Highly experimental."
+              value="editor"
+              aria-label="Edit the currently-selected battle."
+              class="large hide-on-mobile glow-item">
+              <span class="button-icon">✏️</span>
+            </button>
+            <label
+              for="checkbox-vs"
+              title="Virtual Stupidity: Play 'with' two unruly, unlicensed teenagers."
+              class="cta cta-checkbox">
+              <span class="checkbox-wrapper">
+                <span class="glow-item glow-item-checkbox"></span>
+                <input
+                  id="checkbox-vs"
+                  name="bnb"
+                  type="checkbox"
+                  value="1"
+                  data-action="virtual-stupidity" />
+              </span>
+              <span class="this-rocks">🎸</span>
+            </label>
+          </div>
+        </form>
+
+        <p id="game-description">
+          <span
+            >Start with the tutorial, or choose a battle and difficulty.</span
+          >
+        </p>
+      </div>
+    </div>
+
+    <div id="game-prefs-modal-placeholder"></div>
+
+    <noscript>
+      <p>This browser-based game requires JavaScript to run.</p>
+    </noscript>
+
+    <div id="battlefield-overlay-left"></div>
+    <div id="battlefield-overlay-right"></div>
+  </body>
+</html>

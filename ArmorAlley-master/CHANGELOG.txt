@@ -1,0 +1,784 @@
+`ARMOR ALLEY: REMASTERED`
+`Changelog / Revision History`
+`----------------------------`
+
+`WORK IN PROGRESS: 2023-2025 updates since last major release`
+(V2.01.20230520: 10th Anniversary "Remastered" Edition Addendum)
+
+`02/2025, work in progress`
+
+Support for posting game stats to Discord or Slack via webhooks. https://github.com/scottschiller/ArmorAlley/commit/f6b290c535c20457842ca6dde55fdd9cd3f4604b https://github.com/scottschiller/ArmorAlley/commit/039bb4c6b8f4857d804553a8f69df29f5a2a27d5 https://github.com/scottschiller/ArmorAlley/commit/f08287ac95ef4ebf83bf590e39180086de3fc50f
+
+Game statistics: time, score, inventory and other details when battle is won or lost. https://github.com/scottschiller/ArmorAlley/commit/e6edc475ad0c6d3c80731238a8400348d7c6c053 https://github.com/scottschiller/ArmorAlley/commit/408dcc7e82ea2bf10dcc17aeeca233951ba4198b 
+
+`01/2025, work in progress`
+
+Experimental gamepad controller support. https://github.com/scottschiller/ArmorAlley/commit/251622ae8b1d8fe441b9f965b0d5a3026eac406d https://github.com/scottschiller/ArmorAlley/commit/b40ef3a1de2c151726ce4d57191ab641ad625cad https://github.com/scottschiller/ArmorAlley/commit/7c0a2a0ac9768a6b187b72afdb8fdf706260d4b2
+
+`12/2024, uncategorized`
+
+Score, bonus, battle and difficulty display in top right. https://github.com/scottschiller/ArmorAlley/commit/2900425e1b64b9f063bd0d79a646b74d76301637 https://github.com/scottschiller/ArmorAlley/commit/8ddf254edf8789a34f9b0b2535c928629e922aca
+
+Score + bonus tracking, based on original. https://github.com/scottschiller/ArmorAlley/commit/d8655fa85da70ea5d326029f518ee6c25edb1786
+
+Smart missiles smoothly accelerate up to 200% normal speed, when running low on fuel (when they start emitting lots of smoke.) In the original, they simply "move twice" in a single frame. https://github.com/scottschiller/ArmorAlley/commit/e7478f75cd7a0e7db8f3e77a7f2ef0dd939aef99 https://github.com/scottschiller/ArmorAlley/commit/7d961559cc3e86342ac5906ec162f89c9a2682b8 https://github.com/scottschiller/ArmorAlley/commit/7d961559cc3e86342ac5906ec162f89c9a2682b8
+
+Smart missile targeting is now closer to the original; faster to respond, and harder to evade. https://github.com/scottschiller/ArmorAlley/commit/acd0899f4851d0c35f7ec0b5428571be540491ad
+
+The enemy helicopter can recapture its own end bunker. https://github.com/scottschiller/ArmorAlley/commit/1e7b7d349a5f3fbd3a5695119d70e3dcda87110a
+
+Fund capture, now like original. Infantry capture 50% of available funds (optional preference: engineers can "rob the bank" for 100%), end bunker is neutralized, local funds go to -25 (original game showed "captured" in this state.) "Reclaim" end bunker to reset funds to 0, or earn 25+ funds over time. https://github.com/scottschiller/ArmorAlley/commit/497347b365ac995ac5a630f89a76a48f385d037d
+
+Updated enemy behaviour switching to mimic original: attack, defend, steal. https://github.com/scottschiller/ArmorAlley/commit/49e81d4624d13ebc7dd33eda9b0ffc14c907ab56
+
+The enemy helicopter can target Super Bunkers. https://github.com/scottschiller/ArmorAlley/commit/a84206627e0f3ae48ec31ed48d37a318c4ce8708
+
+The enemy helicopter can target your end bunker, and try to capture your funds. https://github.com/scottschiller/ArmorAlley/commit/467ebd6afa76f927c74779fd069b6cd420e55b1a https://github.com/scottschiller/ArmorAlley/commit/d6bbdc4b40eeb0ac201c46d82b8721b7fad91aa0
+
+Nice SoundBlaster FM synth "repair complete" sound from DOS game, overlooked all these years. https://github.com/scottschiller/ArmorAlley/commit/146fbef23a77d69886c6c2c5647f908e9bd15f6b
+
+Battle selection menu now shows calculated IQ + fairness + BNSJ flags based on difficulty, like original. https://github.com/scottschiller/ArmorAlley/commit/a526d8e4f425a202800271cee4e30226662ed4f6
+
+Refactored enemy IQ + battle flags for Conflict difficulty, between Wargames and Armorgeddon. https://github.com/scottschiller/ArmorAlley/commit/aa69d787f93ec8e53bd0475e5aee62e61f9bd9fd
+
+It turns out that infantry *do* carry grenades after all, for one specific case. https://github.com/scottschiller/ArmorAlley/commit/e86014addc0c12c49529efe2a20d0cc609ce88b7
+
+Adjust infantry -> turret damage rate. Slower than original, but feels apropos. https://github.com/scottschiller/ArmorAlley/commit/ef8ca6ffe36e3ab251fdda394c62b7ef7f9ec93a
+ 
+Updated "hit points" and other stats for units and structures, based on original. https://github.com/scottschiller/ArmorAlley/commit/d97fff889213e7e19473869b1488dac81ee98380 https://github.com/scottschiller/ArmorAlley/commit/107cc10d62f6b4c093609542903f5de2648be75d https://github.com/scottschiller/ArmorAlley/commit/62f10150b8ab322efdba2be304a400d0d029035f
+
+Turret gunfire targeting now closer to original, trajectory bug fixed. https://github.com/scottschiller/ArmorAlley/commit/dce10c9f164e8acfae905ee0455cec750f6da3ad
+
+Updated earning of funds, based on original: 1 fund is earned at a fixed interval, depending on distance into enemy territory and difficulty. https://github.com/scottschiller/ArmorAlley/commit/6d30af44ca6d128fd7e7d9b99794f98015114825
+
+`11/2024, uncategorized`
+
+Enemy bias / discount on inventory "up to 212%" (so it can afford largest original in-game convoys), subject to level and difficulty. https://github.com/scottschiller/ArmorAlley/commit/681a890ffe5c9355e7b65d749bfec92ea22ff046
+
+"All-new" CPU convoy ordering patterns varying by level, timing and difficulty - based on the original. https://github.com/scottschiller/ArmorAlley/commit/dc5f9aaeb780ebb8a8a15c139d0bb4c45bd7bad3 https://github.com/scottschiller/ArmorAlley/commit/334776c507bb8f958b57e4c875065f182a636b35
+
+The enemy helicopter can fire smart missiles at turrets, depending on level. https://github.com/scottschiller/ArmorAlley/commit/83959f5ddad6520af636ebab23faa7d52f95df38
+
+Per original: Helicopters start with no paratroopers on board. https://github.com/scottschiller/ArmorAlley/commit/7fb090627d1f066df4ee0ec8cb5cda080130b509 https://github.com/scottschiller/ArmorAlley/commit/1b64313ea1743848d96a1148359d3bf46f322b25
+
+The enemy helicopter can respawn faster as difficulty increases. https://github.com/scottschiller/ArmorAlley/commit/4ad8237512621b1340ae04dd66fca2d31375240b
+
+The enemy helicopter is typically slower than the player on easier levels. https://github.com/scottschiller/ArmorAlley/commit/9b60f9f248b8c05ffc41be03a81a856ed0652ca7
+
+The enemy does not order missile launchers or engineers on easier levels. https://github.com/scottschiller/ArmorAlley/commit/36abc87110adee7eea417ca4720249b6bcf98fed
+
+Tanks eventually use flamethrowers (vs. bullets) on men, depending on level. https://github.com/scottschiller/ArmorAlley/commit/187d1d2232e47f968a3c7767a073b607b8d17e1a
+
+Vans now jam radar at variable distances, depending on level + difficulty. https://github.com/scottschiller/ArmorAlley/commit/d13c049449a8911ecf61d5efc0733f77034f2d2b
+
+Complete refactor of battle configuration / flags, enemy "IQ" and such based on original. https://github.com/scottschiller/ArmorAlley/commit/1601addd1b748d8488df8b975e41daa537a6cc28
+
+Per original: some turrets only target "ground" items (e.g., tanks) instead of helicopters. https://github.com/scottschiller/ArmorAlley/commit/f7a94add177497a35ff28c981bae5b3c43c2ec54 https://github.com/scottschiller/ArmorAlley/commit/273e5a2653e483c4dad952bf5c1d8b4b18dbd3a9
+
+"Armorgeddon" difficulty level, like original. https://github.com/scottschiller/ArmorAlley/commit/cec6fb8d6a88c29619c21598c64cbda84ffa8ef1
+
+Helicopter rotor animation speed, closer to original. https://github.com/scottschiller/ArmorAlley/commit/a84921f643e9cadbd7f4cde2ba0b3fcff6a7c1b4
+
+Bug fix: Hiding in a cloud does not exclude you from vans' radar jamming capabilities. https://github.com/scottschiller/ArmorAlley/commit/4832c9e0d6606108988a65e2718c4b4836d5fba5
+
+Like original, all bunker balloons start at the bottom. https://github.com/scottschiller/ArmorAlley/commit/cf52dac3e97c3dc07f800c50c26ac9c59ac75890
+
+Per original, "flame burns both sides" - bombs with napalm, aimed missile napalm, and tank flamethrowers can hit friendly infantry and engineers. https://github.com/scottschiller/ArmorAlley/commit/e291ede808b5cbfd06591dbc338c93ef1fb2b04d https://github.com/scottschiller/ArmorAlley/commit/9dd55b432ae917af3829fedbc7d83feccae3d472 https://github.com/scottschiller/ArmorAlley/commit/1ac9c100457de3a34fb93dcf8b82694a2035ed07
+
+Per original, inventory / ordering limits: "Requisition denied - quota exceeded" - (`unlimited_inventory` pref, off / limited by default.) https://github.com/scottschiller/ArmorAlley/commit/6dbf71f5218b869d36d33181ad533742a2496552
+
+Nice SoundBlaster-era FM synth sample for "order complete," from the original MS-DOS game. https://github.com/scottschiller/ArmorAlley/commit/225e2280bb2dfb105765629b4374bdd372edfb7c
+
+Like the original, you can now crash into the ground if flying too fast. https://github.com/scottschiller/ArmorAlley/commit/18d9fb5f04961a466350e2b062c652a607506761
+
+Medals are now awarded as you progress through the original campaign battles. https://github.com/scottschiller/ArmorAlley/commit/244fb53314061937bfb149457f51b4b16b0d5d12
+
+Turret gunfire can now hit turrets on the opposing team. https://github.com/scottschiller/ArmorAlley/commit/ad44aae1a65ef7f6d7396e01a7e93e3e69c1389c
+
+It turns out, there can be a benefit to picking up engineers in the field. https://github.com/scottschiller/ArmorAlley/commit/baff08e234ad657846be482c69d5b39d87ea39a6
+
+"Remastered" game sprites, cut from a Mac emulator with the proper Macintosh gamma applied. https://github.com/scottschiller/ArmorAlley/commit/b2348340e479e80ecf017e99b12ecc00111f6253
+
+Enable CPU smart missile firing at turrets, only in Armorgeddon difficulty. https://github.com/scottschiller/ArmorAlley/commit/9462c5e62d97064f4d462f22921c1c684ee86801
+
+Enable CPU bombing of turrets, only in Armorgeddon difficulty. https://github.com/scottschiller/ArmorAlley/commit/194150ea796bd2d7addfbf8b34f6471e07be633e
+
+Improved battle defeat / game over UX/UI, "try again" button. https://github.com/scottschiller/ArmorAlley/commit/c4cdbed45d5a56896c753c071cb521771175b898
+
+Original game feature: Hold shift/ctrl/x/z (within 1 second) to delay respawn, keep watching scene where you died. https://github.com/scottschiller/ArmorAlley/commit/2d5c74477fbc2c15eb9e708df8ea80086d4f94a8
+
+Battle victory messages, based on original game - sometimes specific to the game difficulty. https://github.com/scottschiller/ArmorAlley/commit/8366b553f035fb12086fe7a13ef61c0773eb18ec
+
+Battle defeat messages, more hints and tips. https://github.com/scottschiller/ArmorAlley/commit/adbc20502b78cede6c8989a4e53de6b1a0d6c0e2
+
+Renaming difficulties similar to original game: Easy = Boot Camp. Hard = Wargames. Extreme = Armorgeddon. (TBD: "Conflict" difficulty, between the latter two.) https://github.com/scottschiller/ArmorAlley/commit/9fe2ea35c11df304d8f9e59de747b637da87b13f1
+
+`10/2024, uncategorized`
+
+Battle flag re-labeling: Bullets, Napalm, Stealth, Jamming (BNSJ) -> Aimed Missiles, Napalm, Stealth, Interference (ANSI.) https://github.com/scottschiller/ArmorAlley/commit/9bb0fbb91509baec114b2a83a457bdd9bd0dec16
+
+Battle flag, "jamming" update: radar has "interference" - partially inoperable and fuzzy, rather than completely blocked. https://github.com/scottschiller/ArmorAlley/commit/2d2d721c782d123c5ec316dcc4e86378daca9c98
+
+The last missing weapon: "aimed" AKA "dumb" missiles for helicopters, replacing bullets. Enabled for certain battles and difficulties. https://github.com/scottschiller/ArmorAlley/commit/34739349d7ab61f35209990f5eadaeadd5df0f77
+
+Don't show stealth helicopters on radar, unless they are in view on screen. Ditto for smoke. https://github.com/scottschiller/ArmorAlley/commit/b2079a4ab6b083494ca44ae9692fb742c8f4ac8f https://github.com/scottschiller/ArmorAlley/commit/03d022187720462181630c34d647eb513e264cc7
+
+Bug fix: Smart missile targeting UI was showing stealth helicopters on radar. https://github.com/scottschiller/ArmorAlley/commit/9e62abf3c67f388d866a8070108304fc3b9abea4
+
+If CPU runs out of "dumb" / aimed missiles, it can launch smart missiles at opposing choppers. https://github.com/scottschiller/ArmorAlley/commit/5f351b48252fcd33755f93226b579ab516ebaa0b
+
+Fix CPU wander "end of world" logic, it now reverses course if it gets to the other base. https://github.com/scottschiller/ArmorAlley/commit/d0a4933cf5d4b4115ab2289ad69ceca05e5dd157
+
+Allow CPU choppers to retaliate with smart missiles, when damaged by helicopter gunfire. Can fire single or multiple missiles, depending on game difficulty. https://github.com/scottschiller/ArmorAlley/commit/65c4304cd2d0a647680ab2b3feab844edbbd9f74
+
+Allow CPU choppers to drop paratroopers near turrets, if under attack. https://github.com/scottschiller/ArmorAlley/commit/27e87785fd8d7d03cf7a5f2704bf37f92be6a526
+
+Allow CPU choppers to target and capture bunkers with paratroopers. https://github.com/scottschiller/ArmorAlley/commit/55132fbf47925cbf59131f9203c49523d9c07d4c
+
+Radial energy UI: show + sign when units are repairing. https://github.com/scottschiller/ArmorAlley/commit/7275b15ccafc899f1d64c1dae91dffdba7e78ad4
+
+Bug fix: Expired (falling) smart missiles weren't hitting friendly units. https://github.com/scottschiller/ArmorAlley/commit/887212346756293922c2c2d8abf31f9e2d343e17
+
+Enemy helicopter can now drop "decoy" paratroopers when targeted by a new smart missile. https://github.com/scottschiller/ArmorAlley/commit/9be834c50a6d3bbc083c780b179593bd27be610a
+
+Enemy helicopter tries to dodge, and shoot down incoming smart missiles (and parachute infantry) in its path. https://github.com/scottschiller/ArmorAlley/commit/1b5bc6a61cccf8ecf7aa09c9e0c947b3fb812aac
+
+Energy UI refactor: Draw on canvas, use a circle instead of a line. WIP. https://github.com/scottschiller/ArmorAlley/commit/23acbaa651a0ee914e6ec2e069a3bacc139d1b73
+
+Behavior change: Make chopper gunfire slower on easy, faster on hard + extreme. https://github.com/scottschiller/ArmorAlley/commit/0533af9037ae5ccbe1bf52025ea53e39fcd0cc77
+
+Expand/collapse "more info" section on some modal dialogs.
+
+Dropped red targeting dots in UI - halo or glow deemed sufficient. https://github.com/scottschiller/ArmorAlley/commit/d3e7ad8598d169b7d6b5ecd4a14946680a2ab726
+
+Last missing weapon from the original game, "aimed missiles" (AKA "dumb" missiles) - they replace regular gunfire ammo on certain levels. https://github.com/scottschiller/ArmorAlley/commit/5c2060c807f596056abfbc05d89feb45b9418cb1
+
+Bug fix: Sounds weren't looping, e.g., helicopter engine. https://github.com/scottschiller/ArmorAlley/commit/56480791fbaea6e02b2f8036c8c42df8587ccd7f
+
+Additional mid-flight rubber chicken smart missile sounds. https://github.com/scottschiller/ArmorAlley/commit/e0116c5c3d73019b35bb2ea43aa61a28d8446c51
+
+New sound for tank flamethrowers. https://github.com/scottschiller/ArmorAlley/commit/7abc9e167574597b23084f13c4d456d2188e40d6
+
+Reduced BnB "chatter" when landing pad repair media / TV is active. https://github.com/scottschiller/ArmorAlley/commit/279f65d7f357ddf613b47f1cabbc69c1ab779991
+
+Double-click / tap can now toggle landing pad muzak. https://github.com/scottschiller/ArmorAlley/commit/0d992f3c1f2447c5d421038923aabf4e2f46ee86
+
+Fix transition effect on turret + missile launcher scan nodes. https://github.com/scottschiller/ArmorAlley/commit/75115f5d872094b432d9805036f0f1b0fdd68481
+
+Radar UI updates: More-detailed balloons and bunker icons. https://github.com/scottschiller/ArmorAlley/commit/50308fb8527fad39a74494ceb637645c9e29dcfa
+
+Updated enemy helicopter "AI": seek, evade, wander and so on - now using improved vectors and "autonomous agent"-style steering logic. https://github.com/scottschiller/ArmorAlley/commit/33d9e2e4d0b7ac6b2fbf56bf628dfeafddcc3b33 https://github.com/scottschiller/ArmorAlley/commit/301916da8ee0ebbd3f1b54c6688a061e33c6e5c8
+
+`09/01/2024, uncategorized`
+
+Refueling rate slowed down, made closer to original game.
+
+Updated home screen menu, battle + difficulty now set and updated via preferences modal.
+
+Battle "flags" now listed and mostly implemented, similar to original game: Bullets, Napalm, Stealth, Jamming, and Fairness (battlefield L/R bias)
+
+"Napalm" battle flag: bombs spark on the ground, vs. wider explosion when they have napalm - more effective at taking out infantry + engineers.
+
+"Stealth" battle flag: Enemy helicopter is always hidden on radar.
+
+"Jamming" battle flag: Radar is always jammed, unavailable.
+
+Tweak enemy helicopter acceleration, accounting for inclusion of tilt for gunfire.
+
+Fixed random distribution of paratroopers on chopper eject.
+
+Larger random wind effect on paratroopers.
+
+Per original game, always drop five paratroopers when ejecting helicopter.
+
+Helicopter "eject" button added to mobile UI. 🥀 https://github.com/scottschiller/ArmorAlley/commit/6e45a1d1b749f0f55fce49f5f30e2d475d920390
+
+Drop helicopter screen "boundary" in network games, possible range / visibility issue. https://github.com/scottschiller/ArmorAlley/commit/39d59e67386f2c1fc75a91ec3fb06e20b849d2fb
+
+---
+
+Updated and improved layout for mobile and touch-screen devices
+"Installable" PWA-style web app, iOS home screen / Chrome "app" support
+
+"Unlimited lives" preference, on by default. You can now purchase additional helicopters via "H" (20 funds each), and lose if you run out of choppers. https://github.com/scottschiller/ArmorAlley/commit/55937c5928fe3cba52007fdc8dc6872ab55e4fce
+
+`Bug fixes`
+
+Unit / convoy production could get stuck due to "traffic control" https://github.com/scottschiller/ArmorAlley/commit/4708ef4e8d104f68fd3f838eb8accee011f10f6e
+
+Traffic control: Allow a tank to roll up beside another which has stopped to fire. https://github.com/scottschiller/ArmorAlley/commit/7a29cf13644d335d9aff3cdb7d11fea791b4b57a
+
+Traffic control: Fix production halt case if item being ordered is destroyed. https://github.com/scottschiller/ArmorAlley/commit/1dc9e360f0267a44d753797fdfc66583952e89e6
+
+Bottom bar UI would sometimes overlap battlefield in Safari, capturing clicks. https://github.com/scottschiller/ArmorAlley/commit/6b79bda5ef637743ef15ce5608cbc20e592c2a92
+
+Turret radar item was not reflecting enemy/friendly ownership change. https://github.com/scottschiller/ArmorAlley/commit/361b72aa129aefc27c2f03cc1b32a9cb95c9645a
+
+Fix dead / respawning turret, "not dead" when at 25%. https://github.com/scottschiller/ArmorAlley/commit/902616a7e4f44c8e2a18f30f14086fc71a2f0d95
+
+Show energy while restoring dead turrets. https://github.com/scottschiller/ArmorAlley/commit/cf0bd11dc3a9c2ec0e2b4e3c5d4ca3a3678246f4
+
+Helicopter auto-eject drops correct number of paratroopers.
+https://github.com/scottschiller/ArmorAlley/commit/a9b8738acd3c2e9b4f6200530be84be01b23a93b
+
+Improved inventory ordering timing + spacing, closer to original. https://github.com/scottschiller/ArmorAlley/commit/6e4ca041450c0a6126726f43a7220a0755f10941
+
+Improved home screen / menu on Windows 10. https://github.com/scottschiller/ArmorAlley/commit/4682cc84901baf48a4858a2316cd0f93b5c72163
+
+Bring chopper boundary closer to original game, 25% on each side of screen. Originally 5%. 😅 https://github.com/scottschiller/ArmorAlley/commit/9c82367356c67651d39985e7b0d2f7ccf696f168
+
+Touch events had regressed on mobile Android / Chrome. https://github.com/scottschiller/ArmorAlley/commit/344fe9d297028d391f053860ffdaced2a2ddda63
+
+`Rendering`
+
+Desktop Safari: Scale + transform hacks on certain UI elements to retain sharp rendering. https://github.com/scottschiller/ArmorAlley/commit/ec66d3ee13853d5a7e1f5e14f9e570739988089d
+
+Super bunkers now fire at vans, as in the original game. https://github.com/scottschiller/ArmorAlley/commit/b8ab6a1e2b44383a6b39ece13dca6ffc00c62fd1
+
+Turret gunfire should hit bunkers. https://github.com/scottschiller/ArmorAlley/commit/1b706529619cd17ed2c4036c00bf09cf8531b591
+
+`Misc`
+
+Simplified boot loading
+
+`UX/UI`
+
+Redesigned radar UI with more detail, shape of units vs. rectangles. https://github.com/scottschiller/ArmorAlley/commit/e7238d8ed7c1da274245cb8b78a487b0bfbd051d
+
+More detail for buildings (e.g., Super Bunkers) on radar. https://github.com/scottschiller/ArmorAlley/commit/c532fe4048eec7ea081cb59938d42e82ea4a398a
+
+Game pref / default: 60 FPS, where supported. https://github.com/scottschiller/ArmorAlley/commit/b5fbbb8588af8fd8f74cac89e849e1cfeb0d9868
+
+Always show vans on radar (previously: only if friendly, or playing tutorial.) https://github.com/scottschiller/ArmorAlley/commit/7f2da30d3ab4451cf6ef215c12c94d7b58b9064d
+
+"Remastered" 8-bit sprites from V1.1 of Mac game. https://github.com/scottschiller/ArmorAlley/commit/9e7c9f163884c88df4d7799aa9ac89678aa7aebb
+
+New sounds for production stop/start, borrowing from another classic https://github.com/scottschiller/ArmorAlley/commit/fc4759a1964e4f77b1caf94a349a97f19db4fe0f
+
+"Cash money" sound when stealing from end bunker. https://github.com/scottschiller/ArmorAlley/commit/add457c874b5a89090a01bc8e03cfdc8ad3c2d53
+
+Redesigned home / start screen, more responsive.
+
+Notification toasts can be set to L/R on mobile, too. https://github.com/scottschiller/ArmorAlley/commit/25071680ac5232aeebc7c5e105dbc7084992facf
+
+Improve smart missile targeting UX/UI on radar + battlefield sprites https://github.com/scottschiller/ArmorAlley/commit/082d7383d424a735fddf9c5d32003cdb0595ef34
+
+Pseudo-3D parallax starfield effect, rendering on <canvas>. https://github.com/scottschiller/ArmorAlley/commit/3e6b00a5197a26759c289ee25f94c892b3eba17f https://github.com/scottschiller/ArmorAlley/commit/74fd11910a35aa1f51915558ee7fc9257a746a56
+
+Added terrain decor on network battles, e.g., "Network Mania." https://github.com/scottschiller/ArmorAlley/commit/dc8f088d8767581d1e8a452a79d9d9b182eee2d6
+
+Balloons now show friendly / enemy state on radar. (Original game did not.) https://github.com/scottschiller/ArmorAlley/commit/15b64edcc5c88c154ad26b9e66614555171502bb
+
+Balloons now turn with the wind / their direction, like the original game. https://github.com/scottschiller/ArmorAlley/commit/94098383103a45ac686e8bdfff416f3407ac2fd1
+
+Added base burning animation at game end, finally. https://github.com/scottschiller/ArmorAlley/commit/6dd7c88a84a56991eaf3f2bb0b4529a0c9c9d74c
+
+Push dynamic gravestones back behind most other sprites. https://github.com/scottschiller/ArmorAlley/commit/be395ae78b64c8c1a7c3aa2e0220665e9393bf96
+
+Smoother fuel line animation. https://github.com/scottschiller/ArmorAlley/commit/6c3e5d40b41c44824c61c67ba0ccfddac6ceea49
+
+Nicer "woven" balloon cables / chains. https://github.com/scottschiller/ArmorAlley/commit/327f482268d7bf573edff167f504ff87ae5a2fbf
+
+`Preferences`
+
+By default, disable banana and rubber chickens on mobile. (Can be enabled in prefs.) https://github.com/scottschiller/ArmorAlley/commit/3aa328c00b2beb3a0b4a957099cfe3aba6a4f433
+
+Red / green radar theme, based on unreleased iPhone prototype from 2010. https://github.com/scottschiller/ArmorAlley/commit/dfc1da2dc79033d8074baced816cc96309149a1f
+
+Gratuitous battle-over pref + animation sequence. https://github.com/scottschiller/ArmorAlley/commit/f7659cad93c29b9b26d7900687509141a8b3dfb5 https://github.com/scottschiller/ArmorAlley/commit/7f03cf7fba2f802d11fd70b7a3419c94351a8bf3
+ helicopter auto-flip / rotate based on heading, like the original
+(Double-tap on mobile to toggle feature, single-tap with second finger to flip.) https://github.com/scottschiller/ArmorAlley/commit/fe58683712c6b651531b7d8fdaaab703829deee3
+
+Game speed option, like the original. https://github.com/scottschiller/ArmorAlley/commit/0d620f1101647bba5c9d73a3943ae9988529669e
+
+Apply 80% game speed by default on mobile/touch devices, a bit more balanced. https://github.com/scottschiller/ArmorAlley/commit/cece24fc4729630861d63727797532a1db4e80d0
+
+Clouds on radar. https://github.com/scottschiller/ArmorAlley/commit/7742ad1358c588e232e5dce89e6a1c83ff84b063
+
+"Show landing pads on radar." Some can be obscured by shrubbery. https://github.com/scottschiller/ArmorAlley/commit/b06ce3bbe31cf06bc4af53e761c1462b71bdbc48 https://github.com/scottschiller/ArmorAlley/commit/cadace06b03db418069f4909652ce0ef43b44894
+
+Super Bunker: "Show arrow" pref, including friendly / hostile / enemy. Original game did not. https://github.com/scottschiller/ArmorAlley/commit/10d1f870e9f4cbf16b41d97d5d2b07d0e6643f38
+
+Smart Missile Upgrades pref: targeting, retargeting, and delay features.
+
+Notifications: Position and sorting (L/R, top-down / bottom-up) options. https://github.com/scottschiller/ArmorAlley/commit/26a3dfb6c1d71ce95afd2b9c0cf43024cec6a03c
+
+"Extra-fancy" radar jamming effects: in-game, and home screen. https://github.com/scottschiller/ArmorAlley/commit/d82b209a7c20da8421800e42450d90d0b03a418d https://github.com/scottschiller/ArmorAlley/commit/103079cdc5f7e1f66a64879ad4cff7424abbde14
+
+Allow tank gunfire to pass thru bunkers and super bunkers. https://github.com/scottschiller/ArmorAlley/commit/7a9df0ea8e664f14e1ce8fe5855a75d219d5e594
+
+Radar scaling and scrolling feature, useful particularly for mobile devices. https://github.com/scottschiller/ArmorAlley/commit/37c452972163ea1c00a7c72a65660d40d46b6042
+
+`Mobile / touch`
+
+Improved handling of device rotation and game scaling, portrait vs. landscape. https://github.com/scottschiller/ArmorAlley/commit/00ba9bbdef609e01d14eb0db79f853af76fcb833
+
+Show keyboard labels if keypresses are detected, e.g., an iPad "folio" keyboard. https://github.com/scottschiller/ArmorAlley/commit/4a687a39264ad601822d45c711845a9b6db83279
+
+Don't pause the game on screen rotate any more. https://github.com/scottschiller/ArmorAlley/commit/327bd67ace135f41a3c7ddc8073c4246c1db05e9
+
+Bug fix: Always add touch and mouse event listeners. https://github.com/scottschiller/ArmorAlley/commit/d7ce04f1641dd4d4ccf30df5138c198d61a73dec
+
+`Gameplay`
+
+Tanks are now more evenly-balanced; CPU tanks no longer have the advantage of slightly-faster gunfire rates in hard + extreme mode. https://github.com/scottschiller/ArmorAlley/commit/71435b3cec21afc46e2b7113c17ce0a5d461abf5
+
+Helicopter "responsiveness" tweaks, CPU + human. https://github.com/scottschiller/ArmorAlley/commit/1faeb7bd099cdd559b0eee6aaea602e16683e8a9
+
+Fuel burn rate reduced, closer to original game: ~30% (instead of ~50%) of a tank to fly across battlefield. https://github.com/scottschiller/ArmorAlley/commit/55db1bcd13de3b6e7166b95181867cd7923829f3
+
+Smart missile "repair" (reloading) rate increased, closer to original: one for every 32 ammo added. https://github.com/scottschiller/ArmorAlley/commit/e8a6fb20a025e9916d1ee35a0a8f85775c6abff4
+
+Infantry gunfire now takes a long time to take out turrets, like the original. https://github.com/scottschiller/ArmorAlley/commit/1e1ec2587dd4d4db419edef1dcc5791019b5dcf5
+
+Slightly longer delays between enemy convoys on hard + extreme mode, it was pretty tough. https://github.com/scottschiller/ArmorAlley/commit/ae4583bf262b69fc99bb69b59e1b6c04cd8ba849
+
+Allow CPU helicopters to use "tilt," vs. purely horizontal gunfire. https://github.com/scottschiller/ArmorAlley/commit/9b5120be9237acbfc7f45c88c014b427261fb3e9
+
+Responsiveness: Make helicopter react ASAP to user action. https://github.com/scottschiller/ArmorAlley/commit/8be1eeced1069aa2a68479ae904ab2be9a963959 https://github.com/scottschiller/ArmorAlley/commit/589eee62cde85403e6a4b9e183b96b575c05746a
+
+Tighter collision checks. https://github.com/scottschiller/ArmorAlley/commit/9b057c122bd7b654259ddde6660425567dbf7607
+
+Match gunfire position with angled tip of turrets when firing. 🎯 https://github.com/scottschiller/ArmorAlley/commit/e121f0b51211d6ebd3f2e4505b216eca18d74e5c
+
+Adjusted velocities on bombs, gravity vs. "lobbing" https://github.com/scottschiller/ArmorAlley/commit/dd3336cadb1c0f91d2009dd1039645490e546eee
+
+Tweaks to shrapnel velocities. https://github.com/scottschiller/ArmorAlley/commit/4ba35240ee213fa0c0673605f7165aee7819060e
+
+Original game: "Z" for bombs, retaining the remake-introduced Ctrl. https://github.com/scottschiller/ArmorAlley/commit/db568ac235b09db3f02439bf77ad85d93651eac2
+
+New keyboard entry: ` (backtick) = eject. Keeping old backspace key for legacy, for now. https://github.com/scottschiller/ArmorAlley/commit/fd1d1f4efbb58b5b6b9faac34e3f6923fc72ab19
+
+Paratroopers drop faster when flying, slower when landed. https://github.com/scottschiller/ArmorAlley/commit/19d6f61d20cf35a6debf3c95c3b443d35acd0a3e
+
+Slightly slower bombing rate. https://github.com/scottschiller/ArmorAlley/commit/641d31a6b6aba2baacad0076075fead61babafe9
+
+By request: "Classic" helicopter controls option, slower gunfire + bomb intervals etc. https://github.com/scottschiller/ArmorAlley/commit/c8605659167e24a3280319e3ee7d1c8c6219b32f
+ helicopters can now escape smart missile tracking by entering a cloud for 1.5 seconds. https://github.com/scottschiller/ArmorAlley/commit/b05e618effac881e2cf755f846863962977b94db
+
+Allow respawning helicopter "a chance" if an enemy turret is within firing range of your landing pad. https://github.com/scottschiller/ArmorAlley/commit/2d7c78fd99284d9fe9124739c3b2fbf1da542815
+
+Super Bunkers fire faster, slightly greater range. https://github.com/scottschiller/ArmorAlley/commit/fc4c4c470d2cb6d858c60d257b4dcab6e932b657
+
+"Envelope": Letters from The Old Tanker for each battle, based on the story from the printed combat handbook. https://github.com/scottschiller/ArmorAlley/commit/dac4bd195c631af135649b2b3a66a6e246ac6ba4
+
+Clouds don't "bounce" off top / bottom of world, but now smoothly drift. https://github.com/scottschiller/ArmorAlley/commit/f3c9a5b83a51b970153a1079955b1a173a8035cf
+
+Clouds reverse direction over world boundaries more smoothly. https://github.com/scottschiller/ArmorAlley/commit/cdf87d3aad1c312525e7e49277704666f8884abf
+
+Choppers cause clouds to start drifting toward the opposing base. https://github.com/scottschiller/ArmorAlley/commit/a6a92bdfc695318d77a64ac452673fb4ea5bc694
+
+Battlefield now "warp"-scrolls back to respawn point, and to enemy base at end of game. https://github.com/scottschiller/ArmorAlley/commit/5e6d8ea5149cc27f5e5b8cf1e77851d3b5cceab6
+
+Smart missiles no longer target balloons attached to bunkers. https://github.com/scottschiller/ArmorAlley/commit/718386f480d097c6b752d19794e48f16f3b282e7
+
+"Smarter" smart missiles: Don't target ground units behind impervious super bunkers. https://github.com/scottschiller/ArmorAlley/commit/61db3f4a555d19831d428193d78ed6652ea9788c
+
+Enemy helicopter now takes off slowly on respawn. https://github.com/scottschiller/ArmorAlley/commit/410c2b6ade89ccd468594155933b08f057f066b2
+
+`Network / multiplayer`
+
+Basic network troubleshooting UI for guest connection trouble. https://github.com/scottschiller/ArmorAlley/commit/a3c4150a143d1bcde3aae021c7ab99da25301fb0
+
+Fix de-sync of balloons between clients in network games. https://github.com/scottschiller/ArmorAlley/commit/0b6c5293a8bd2a9c0a91bae2a034013d0cedd234
+
+Use fixed wind values for balloons, "random" and related wind changes were causing de-sync. https://github.com/scottschiller/ArmorAlley/commit/74a19e1fe5c800056256ea5309f4a24c8c8059d7
+
+"Scan range" UI for turrets and missile launchers, in radar and/or battlefield. https://github.com/scottschiller/ArmorAlley/commit/cf70b247c92479b84d64d3009d2c3e15dba7d6da
+
+Possible fix for annoying explosion-on-respawn bug. https://github.com/scottschiller/ArmorAlley/commit/14cecdab94d672835fcd2b923bf7a756dad0190a
+
+Omit random parachute on helicopter die, de-sync risk. https://github.com/scottschiller/ArmorAlley/commit/0b39d18467b73d8c50cc26f975275a84c3549d45
+
+Network bug: Remote engineers were showing as infantry. https://github.com/scottschiller/ArmorAlley/commit/64ec9927a9115d4aff982ea096a7e0b37c75a80f
+
+De-sync risk: Ignore wind on paratroopers. https://github.com/scottschiller/ArmorAlley/commit/668d37ecc15cbd556c041d4e644229cfb2783cc3
+
+`Performance`
+
+"Boot loader" for game start, and dynamic load / unload of assets. https://github.com/scottschiller/ArmorAlley/commit/fab72decc8a046d498a0d9a9c6a670d7da635b41
+
+Code splitting of JS + CSS modules, dynamic fetch and unload where feasible. https://github.com/scottschiller/ArmorAlley/commit/e22fe9785855dbef7fc85879996e81e714b9ab78 https://github.com/scottschiller/ArmorAlley/commit/dd643d32bdc15b8c55e2b02b980c30ec3913ed32
+
+Code splitting: HTML fragments. https://github.com/scottschiller/ArmorAlley/commit/346708b71c2d053c8d81ad8ce6c1e237a6e9b9d3
+
+Drop preview and level editor on game start. https://github.com/scottschiller/ArmorAlley/commit/91a7c0348cd5e4862ac8aca35a82dfa3e71acf5a
+
+Almost all radar UI, shrapnel, gunfire, smoke, confetti, battlefield and sprites now rendered on <canvas> for performance. https://github.com/scottschiller/ArmorAlley/commit/40600cfdcf7e28951609b91891756ae7098a4c7c https://github.com/scottschiller/ArmorAlley/commit/6d156e05b30a304a1c59809d585d69b5ca09baf7 https://github.com/scottschiller/ArmorAlley/commit/b9b4ded6f8309e91ea7fc74cfff49d9106696b3b
+
+Google Lighthouse improvements - first paint, load, game start etc.
+
+"BnB: Virtual Stupidity"
+
+"I am the great Cornholio!" 😝👕👐 https://github.com/scottschiller/ArmorAlley/commit/7768c46457f4e484d81d5052a8111c14552d902e
+
+Update BnB end-of-battle sequence, now with proper desert scene. 🤣💨🧨🔥 https://github.com/scottschiller/ArmorAlley/commit/49274f6b739e9ec1d8793fa5703d4a4064115fbf
+
+`Development / build process`
+
+Reorganized codebase into conventional src/ and dist/ subdirectories. Better file structure.
+
+gulp build script, spritesheets for image and audio. https://github.com/scottschiller/ArmorAlley/commit/bec179f1d97f42dfa189a4783406baf9265372ea https://github.com/scottschiller/ArmorAlley/commit/dc7b574e87b83e552035b22e8452898c4ec23973
+
+.webp-based spritesheet, ~50% savings vs. PNG. https://github.com/scottschiller/ArmorAlley/commit/071a1ae3aab37ae2df2d1b024577bc8042447cc6
+
+Preloading of spritesheets. https://github.com/scottschiller/ArmorAlley/commit/0eb8d28076f39657e24cd4e5006877768891842d
+
+Canvas-based spritesheet image extractor + cache mechanism for rendering. https://github.com/scottschiller/ArmorAlley/commit/dcf541baaf15f9773dfbad1272e5e2d715ba91f6
+
+Floppy disk version: 5.25" (360K) and 3.5" (1.44 MB) builds of the game
+
+Floppy version boot loader https://github.com/scottschiller/ArmorAlley/commit/6f69bf96568c1b04ebd030405ef9de7f5f75d2a2
+
+💾 build-floppy gulp task. Build target: floppy-version/ https://github.com/scottschiller/ArmorAlley/commit/bca9aa22e5d280f69ae262a6cf34a71ea65b2c7b
+
+Floppy build: +aa.bat (web server portion) on Windows. https://github.com/scottschiller/ArmorAlley/commit/4385d85eecb4496bc0fb1c3af0920313dd4144dc
+
++ V2.01.20230520: 10th Anniversary "Remastered" Edition Addendum
+
+  + 10th Anniversary summary video (3m 45s): https://youtu.be/oYUCUvg02rY
+  + History, review, tutorial, demos, "Midnight Oasis" walk-through: (1h 12m 55s): https://youtu.be/6wEMcssFJ-E
+
+  + Bug fixes of note
+    • Don't let helicopter reach absolute edge of screen; buffer 5% on each side.
+    • Mobile / touchscreen: Bananas weren't firing sometimes, due to incorrect keyboard mappings.
+    • Sound: Always wait for sound load before firing `onplay()`.
+    • Sound: Relative, in terms of distance to the helicopter.
+    • Video: Ensure video is active when initial request / preload completes before playing.
+    • Editor: Engineers were being output as infantry.
+    • Update positioning of helicopter trailers for both sides, and when rotated.
+    • BnB: Show existing "Cornholio" turrets at start of game.
+    • "Midnight Oasis" network level: Added terrain decor - gravestones, trees etc.
+
+  + Miscellaneous
+    • Project now has its own site: https://armor-alley.net/
+    • Nice progressive web app-style icon set.
+    • Updated "Armor Alley" wordmark to resemble the original boxed software one, based on the "Stencil Compress D" font.
+
+  + For developers
+    • Added developer notes, `gulp-cli`-based build via `npm`: src/README.md.
+    • Concatenated + minified / bundled JS + CSS files, see [gulpfile.js](gulpfile.js) for build script.
+    • SM2 + Snowstorm are now ES6 modules, included vs. concatenated into bundle.
+
++ V2.0.20230501: 10th Anniversary "Remastered" Edition
+
+  + 10th Anniversary summary video (3m 45s): https://youtu.be/oYUCUvg02rY
+
+  + New features
+    • Mobile / touch screen support. Updated UX / UI, better playability and feature parity vs. desktop. Portrait is playable, but landscape is preferable on smaller screens.
+    • Network multiplayer, like the original game. PvP, or co-op. Can be played with or against CPU players, as well.
+    • 22 game levels. 10 original game "campaign" battles, plus 12 levels designed for network games.
+    • Level editor. Create or modify existing levels. Data stored in URL at present - terrible, I know. Also compatible with network games.
+    • Optional "Virtual Stupidity" theme pack. 🎸🤘
+
+  + Performance improvements
+    • Reduced CPU load, in general, across the board between JavaScript execution, layout, and paint / compositing.
+    • Game Loop: Adjustments to target 30FPS on 120 Hz monitors. [01f9f43]
+    • Collision "zones", greatly reducing object comparison work and function calls. 20,000 collision checks per second, down to 500 or less. https://twitter.com/schill/status/1627725917345955840
+    • DOM node pool / recycling: `poolBoy.js` - for things like gunfire and smoke. Less paint / repaint, more GPU compositing. https://twitter.com/schill/status/1628833430988554240
+    • Reduced variable / object creation in game loop.
+    • Battlefield DOM node no longer being transformed for scroll; now, only on-screen sprites.
+
+  + Sound
+    • Even more sound effects.
+    • Some sounds can use ±5% playback speed for a little variety.
+    • Sounds can now be heard "in the distance," to the left and right.
+    • "Virtual Stupidity": 500+ meticulously-picked samples. [21f7726]
+
+  + UX / UI
+    • "Live Graveyard" feature: decorate the battlefield over time. [032f845]
+    • "Remastered" 8-bit sprite assets from Armor Alley V1.1 for Macintosh. The original 1.0 and PC-DOS version had up to 4-bit colour.
+    • Nice home page logo, "scanned" from the combat handbook that came with the original boxed game.
+    • Network games use Windows 95's `LIGHTS.EXE` taskbar UI showing tx/rx traffic, very important. ;) https://twitter.com/schill/status/1636449071140605958 [17c0a9b]
+    • Four types of stormy weather: rain, hail, snow, and one other that's a surprise.
+    • Radar jamming: New visual noise overlay.
+    • "Extra-fancy" bunker explosions, particles, burning, and smoke effects.
+    • Nicer bomb explosion on ground. Hat tip: "Dirt Explosion" by SrGrafo on DeviantArt - https://www.deviantart.com/srgrafo/art/Dirt-Explosion-774442026
+    • "DOMFetti" confetti explosions, colours based on the target being hit.
+    • Notifications: Verbiage for different actions, e.g., "your tank steamrolled an infantry", or gunfire "popped a balloon" etc.
+
+  + Bug fixes
+    • Refactor of Traffic Control, so vehicles are less likely to get "stuck" waiting for one another.
+    • Helicopter bombs could be delayed after key press. They should now be consistent and fire on the next frame.
+    • Super Bunkers would sometimes stay yellow, even when friendly.
+    • Additional "arrow signs" on battlefield were missing from bases since 2013. Oops. ;)
+    • Paratroopers (dropped from helicopter) no longer get a recycle (reaching end of battlefield) reward.
+    • Balloon respawning at top of screen: fixed.
+    • Allow balloons to be moving up or down at init, previously always downward.
+    • Fixed bomb spark / hidden / bottom-align logic.
+    • Tighten up inventory ordering / queueing, consistent spacing + avoiding overlapping between sprites.
+
+  + Gameplay
+
+    + Helicopters
+      • Only the local player's helicopter blinks on the radar; all others are solid, as in the original game.
+      • Desktop: double-click no longer toggles helicopter auto-rotate feature.
+
+    + Smart Missiles
+      • Notify user when trying to fire a smart missile, but no eligible targets nearby.
+      • Smart missiles can now take damage, and plow through up to four infantry (ground units only) before dying.
+      • Smart Missile targeting refactor. Removed former "missile facing target" requirement. Prefer shortest distance, unless just above ground. Hat tip: Pythagoras. :wink: :triangular_ruler:
+      • Smart Missiles now target your vertical offset, plus half your height.
+      • Smart Missiles now blink on launch, and take a moment (0.5 seconds) to arm themselves, and are not as dangerous (1 damage point) until then. This is implemented as the "Ramius frame count" (delay) [1d71faf] - as inspired by "The Hunt For Red October." https://www.youtube.com/watch?v=CgTc3cYaLdo&t=112s
+      • New feature: Smart Missile "decoy" ability, - about 1/3 of a second to see and retarget a newly-deployed paratrooper when the initial target was the helicopter. [926b16f]
+
+    + Gunfire
+      • Gunfire can now collide with gunfire.
+      • Turret gun firing rates have been reduced significantly for easy + hard levels.
+      • Gunfire can now ricochet off the roof of a Super Bunker.
+      • Desktop: Helicopter gunfire now stops when landing on, and cannot start while on a landing pad.
+
+    + Bombs
+      • Bombs now "pass-thru" infantry, as opposed to dying 1:1.
+      • Bomb explosions on the ground can now take out larger groups of infantry.
+      • Bombs can be hit by gunfire in extreme mode.
+
+    + Tanks
+      • Tanks have finally been given flamethrowsers (as in the original game,) which they use on infantry, engineers, super bunkers and end bunkers. [e3de57e]
+      • Game preferences refactor. Volume control, UX/UI, and optional gameplay features.
+      • Enemy tanks fire every 11 frames in "hard" mode, 12 in "easy" (and tutorial), and 10 in "extreme." Previously, all were 10.
+      • Tanks now repair more incrementally, larger gains every 1 second.
+
+    + Other
+      • Engineers start repairing bunkers (if enabled) at the doorway, "shielded" by bunker vs. previously standing outside.
+      • Landing pads can be "The Danger Zone" if enabled in prefs. This was inspired by the 2022 Top Gun movie release. See also: "The Girl From Ipanema, "I Got You Babe," "Mucha Muchacha," and more.
+      • Base explosions can now also damage units passing by.
+      • Bases can fire rubber chickens + bananas if "match missile type" enabled in prefs.
+      • "GOURANGA!" - inspired by the original Grand Theft Auto.
+      • When the battle is over, the losing team's units all contribute to the explosion party.
+
+    + Technical
+      • Codebase migration to ES6 modules, patterns and syntax.
+      • SoundManager 2: hacked-together version of Web Audio API for playback, vs. HTML5. [a44bc81]
+      • Refactoring of game type and objects system; e.g., `tank` -> `TYPES.tank`, and `game.objects.tanks[]` -> `game.objects.tank[]` so look-ups and interating by type are logical.
+      • `game.players` now has local, remote, cpu etc., which point to helicopters. Previously, many assumptions were made about `game.objects.helicopters[0]` and `[1]`.
+      • Network feature uses [PeerJS](https://peerjs.com/) (MIT license) for peer-to-peer communication via WebRTC.
+
+    + Miscellaneous
+      • It turns out there are _three_ types of cloud sprites in the original game, not two. [4a561c4]
+      • 12 smoke frames in the original game too, vs. my 9. [53f08aa]
+      • Nicer ASCII block-character logo.
+      • Updated favicon + related app / tile images.
+
+----
+
++ V1.6.20220101: Massive update for 2022, based on work from 2020 + 2021
+  
+  + Video oveview
+  • Demo, features and walk-through of "extreme" mode (55 minutes): https://youtu.be/9BQ62c7u2JM 
+
+  + Performance improvements
+  • The game should be smoother, targeting 30FPS. It is OK full-screen @ 1080p and windowed @ 4K in Chrome on a 2018 Mac Mini, 3.2 GHz 6-core i7 w/Intel UHD Graphics 630 1536 MB.
+  • More GPU-accelerated rendering, reduced DOM nodes by removing when off-screen (e.g., static terrain items)
+  • All sprites should be on the GPU and moved using transforms, reducing paint operations
+  • All transforms (CSS + JS) for positioning + animation are 3d, with the goal of GPU acceleration - e.g., translate3d(), rotate3d(), scale3d()
+  • DOM nodes are not appended at object create time - now deferred until the object is on-screen for the first time.
+  • All "sub-sprites" should now be GPU-accelerated via CSS animations, transforms and transitions
+  • Sound: Only create `Audio()` when actively playing sounds, and destroy when they finish playing. Browsers are starting to limit the number of `Audio()` instances.
+  • Sound: Queue and play sounds all at once with each animation frame callback, vs. prior ad-hoc behaviour.
+  • Refactored game tip scroller to only show two nodes at a time, 1024px width vs. 102,400px. Front-end tech / Chrome Dev Tools demo: https://youtu.be/eVW0WgTdK3A
+  • Performance: Don't update known static radar items: turret, base, bunkers (bunker, end bunker, super bunker) unless marked as "stale" during resize / world scaling
+  • Performance: CSS / `contentVisibility` to reduce / optimize rendering costs
+  • Animation loop: improved timing, target 30 fps. Request next frame right away. Exit early if next frame arrives too quickly.
+  • Turret "scan" is now a CSS animation; previously, animated via JS.
+  • Smart missiles and helicopter trailers are now GPU-accelerated.
+  • Performance: Battlefield and radar units are now positioned via transform: translate3d() - no more legacy CSS shenanigans using `bottom: 0px`.
+  • Memory leak fixes: DOM nodes, audio events, and a few others.
+
+  + Sound
+  • Over 100 sound assets now in use
+  • New and updated sound effects: Infantry and engineer gunfire, injury and death, credit +/-, helicopter and turret guns, shell casings on turrets,
+    bullets hitting the ground, turret being disabled and enabled (restored.)
+
+  + UX / UI
+  • Proper "game options" modal with radio buttons and checkboxes for various UX/UI and gameplay features
+  • "It was a dark and stormy night" - option for snow on the battlefield. (May be slow on some computers.)
+  • Bunkers, balloons and super-bunkers now use graphics from the Macintosh (68K) version of Armor Alley; a bit more orange, and less garish yellow.
+  • Dune ][-style credit / debit UI and sounds
+  • Toast-style game notifications
+  • Health status bars when units are being hit or repaired
+  • New and improved smoke / particle effects, more explosions and shrapnel, more fun!
+  • Order queue: Refactored UI to show letters (e.g., MTVIE), with superscript numbers as appropriate.
+  • Missiles smoke more, and in extreme mode, have a burst of thrust (as in the original game) as they near expiry
+  • Pseudo-3D effect on shrapnel: Increase size slightly with vertical position on screen
+  • Ground units are "behind" most terrain elements like trees, bushes etc.
+
+  + Bug fixes
+  • Bombing floating balloons no longer causes an explosion on the ground
+  • Improved bomb and shrapnel alignment / collision positioning with balloons, tanks, bunkers, and super-bunkers
+  • Fixed bug with quickly-respawning balloons (shooting balloon while infantry are passing under bunker, for example.)
+  • Fixed UI bug where the "incoming missile" white line would not always disappear.
+  • Game end: Improve alignment of view and base
+  • Adjusted initial position of game, centering view on the helicopter + base
+  • Helicopter / super-bunker: Improve vertical alignment if helicopter crashes on superbunker "roof."
+  • Fixed radar item for Super Bunkers, now shows correct friendly / enemy status.
+  • Cloud "wind" accelerates / decelerates more smoothly
+  • Clouds no longer "bounce" when they drift off the end of the world, but get a nice bit of wind to bring them back into view.
+  • Slight vertical alignment tweaks on gunfire and balloons in radar view.
+  • Improved orientation of heat-seeking smart missiles (and rubber chickens and bananas) as they track their target
+  • Tweaked movement and velocity of smart missiles, making them potentially faster / more random
+  • Enemy helicopter will now turn to face targets. Sometimes it would fire the other way. ;)
+  • Improved helicopter motion when approaching landing pad - "bounce" has largely been eliminated.
+  • Improved off-screen / on-screen DOM pruning, restoration of 3D transforms when re-appending DOM elements
+  • Fixed end-game bug, sometimes ground units (e.g. van) did not appear at base when blowing up.
+  • Adjusted collision detection: if helicopter is hiding "in" a friendly super-bunker, bombs should hit the roof of the super bunker and not the helicopter.
+
+  + Gameplay
+  • New weapon: Heat-seeking bananas
+  • Ground unit "Traffic Control" option: Vehicles try to leave space between, and avoid overlapping each other. Tanks will now "park" behind friendly tanks,
+    avoiding a pile-up. Tanks normally only stop to fire. Vans and missile launchers will now wait for each other, too. Tanks will not stop for vans or
+    missile launchers, giving tanks a greater chance of ending up at the front of a convoy - a preferable offensive position.
+  • Units can now be "recycled" if they cross the battlefield, you are rewarded 2x cost in credits
+  • Engineers can now steal all funds from enemy bunker
+  • Engineers can now repair (but not rebuid) friendly bunkers
+  • Bullets now ricochet off non-friendly super-bunkers
+  • Shrapnel will ricochet off certain units (tank, super-bunker)
+  • "Incoming missile" doesn't show in extreme mode when the radar is jammed.
+  • End base, extreme mode: if a defense missile is destroyed, respawn another within 0.5 seconds.
+  • Missile launchers trigger when closer to the helicopter, more likely now to be on-screen
+  • Helicopter respawn: Delay if certain ground units are obstructing the landing pad.
+  • Enemy helicopter AI: Default 10% of dropping bombs when targeting a tank, subject to game difficulty (hard: 15%, extreme: 25%.)
+  • Bombs can now collide with smart missiles and take them out
+  • Tank gunfire only hits bunkers if tanks are shooting at a helicopter, or another tank
+    (bug fix: previously, tanks could destroy a bunker trying to hit an infantry on the other side.)
+  • Super bunkers that are un-manned are "neutral" and dangerous to both sides, and will be shown as hostile on the radar.
+    (This includes when tanks disarm a bunker by firing at it.)
+  • Bomb trajectory now includes the helicopter's Y-axis velocity, and they now rotate along with their trajectory.
+  • Helicopters now rise up from the landing pad on game start and respawn, like the original game.
+  • Helicopter gunfire takes tilt / angle into account.
+  • Helicopter "shake" starts when health is under 70%, gets worse with damage. This affects gunfire trajectory.
+  • Your missile launchers only fire at the enemy helicopter when the convoy is "unassisted", e.g., there is no friendly helicopter or turret nearby.
+  • Extreme mode: If you shoot down the enemy base's smart missiles while near the base, it will launch new ones that are faster and more difficult to dodge.
+  • While on a landing pad, your gunfire may go over infantry's heads most of the time.
+  • Don't assume the top of the battlefield is always safe; watch out for balloons!
+  • Paratroopers now fall at slightly different rates, and may be affected more by wind
+  • A few additional, inspirational [ game paused in background ] messages
+
+  + Technical notes: development / code
+  • Migrated core JavaScript to ES6 syntax, retaining functional + prototypal inheritance style. Slightly less verbose.
+  • As part of ES6 migration, dropped legacy IE 8 + 9 code and checks: ancient event handlers, lack of transform, `requestAnimationFrame()` polyfill etc.
+  • Lots of cleanup: Exit early, reduced `if/else` nesting. Dropped all `setTimeout()` calls, moved to a frame-based approach: `setFrameTimeout()`.
+  • `aa.js` (core game code) is massive at ~450 KB, and seems like a good candidate to be broken up into ES6 modules. TBD.
+
++ V1.51.20181124
+
+  + Performance tweaks
+  • More motion / animation is now on the GPU via `transform`, vs. `style.left` / `style.top`.
+  • Main animation loop calls `requestAnimationFrame()` first, before anything else (like VSYNC.)
+  • Drop legacy SM2 flash options.
+  • Turret scan is now driven by CSS animation vs. JS setting an angle transform every frame.
+
+  + Sound
+  • New base explosion, tweaked other explosion sound effects.
+  • New "heavy mechanics" bunker chain (repair) sound.
+
++ V1.5.20180201
+
+  + Big feature updates!
+  • Game "mostly" now works on mobile devices. Touch-based events for helicopter control, UI for helicopter weapons and inventory / ordering. Tested on iPhone X. Others should work reasonably-well. Hopefully.
+  • Inventory order queueing! 🎉 (Finally.) e.g., 3 tanks in a row. Queueing deducts funds immediately. No added UI or cancel ability (yet.)
+  • Battlefield view is now bigger on screen. Stats UI is dead, long live stats.
+  • Performance improvements. tl;dr: JavaScript tweaks, putting most all sprites onto the GPU. Replaced most common animated .GIF backgrounds with 3d-transform, GPU-accelerated CSS animation-driven sprites. 😅
+
+  + Sound
+  • No sound for any Safari (desktop or mobile) for now, including version 11.0. Multiple sounds kill performance on desktop, and "auto-play" is effectively blocked on mobile. https://bugs.webkit.org/show_bug.cgi?id=116145
+  • New + improved helicopter machine gun sounds. 9 different samples, played at random.
+  • New sound effects: "bomb hatch" (helicopter bomb release), tank gunfire, bunker chain/balloon repair, helicopter gunfire hit.
+  • "Medals clanking" sound for bunker chain/balloon repair. (BY-NC 3.0.) https://freesound.org/people/Gareth_H/sounds/365799/
+  • New tank gunfire sound: "Tank Fire Mixed.wav" by Cyberkineticfilms/freesound.org (CC0, "No Rights Reserved". 🙇)
+  • Hat tip: "Bolo" "tank self hit" sound effect, Copyright (C) Steuart Cheshire 1993. My favourite Mac game of all time. ❤️
+
+  + UX / UI
+  • "Radar jammed" TV static-like overlay with transform sprite.
+  • Slightly faster helicopter bombing rate - more responsive.
+  • Chain refactor. Use fixed height, animate via transform, fall with gravity when balloon and/or bunker are lost.
+  • Balloons are yellow-ish on radar, and now transform-rotated to elliptical shapes. Bunkers / base color and border tweaks, friendly vs. enemy now look different.
+  • Inventory and helicopter ammo, etc., become greyed out when unaffordable / unavailable.
+  • Target / "tracking" animation on Smart Missile targets.
+  • Smart Missiles can now re-target on the next frame after the original target dies. If a new target can not be immediately acquired, the Smart Missile dies as previously.
+  • Radar items, clouds and some other sprites move more smoothly simply by dropping `parseInt()`.
+  • "C" / rubber chicken use causes UI to switch to rubber chicken mode.
+  • Possible bugfix: If paused and enemy order timer fires, re-start timer. This probably fixes enemy inventory building sometimes breaking.
+  • Jam radar all the time on hard + extreme game types.
+
+  + Miscellany
+  • Note re: Firefox `will-change` memory consumption warning that might show in console.
+  • URL feature flags: `noTranslate3d` and `noRadarGPU`. `frameRate=[60|*]` for testing of `requestAnimationFrame()` timing. camelCase others. Let Opera (now webkit-based) have transforms.
+  • +`makeTransformSprite()`, a sort of sub-sprite for CSS transform-based animations (GPU-accelerated animated .GIF alternatives.)
+  • `z-index: -1` can be harmful for performance / compositing.
+  • iPhone X notch handling based on orientation and whatnot.
+
++ 12/2017
+
+  + Optimized performance / dropped CPU usage significantly by hiding off-screen elements.
+  + Fixed silly blank / empty frame in balloon right -> left animation sequence.
+  + Dropped numerous legacy -webkit and -moz prefixes in CSS.
+  + DOM Pruning option with offscreen logic
+
++ 10/2017
+
+  + Fixed up top stats layout in Firefox, Safari, Chrome.
+  + Emoji to convey meaning of tutorial, easy, hard, extreme modes.
+  + ESLint code clean-up.
+
++ 09/2015
+
+  + "Extreme" game mode
+  • Higher enemy convoy production rate.
+  • Turrets fire at a faster rate.
+  • Twin enemy turrets near mid-field.
+  • Turrets fire at ground vehicles and smart missiles. Infantry and engineers are not targeted, but can be hit.
+  • Owning all bunkers does not halt enemy production.
+
+  + Miscellaneous
+  • Fix for "negative look-ahead" case - enemy Super Bunker now fires at helicopter on both sides.
+  • `Math.abs()` checks on distance for missile launchers
+  • Fixed Bunker and Super Bunker vertical alignment / collision detection with helicopter
+  • Infantry will not be picked up when the helicopter is on a landing pad and repairing.
+  • Shrapnel shows on radar.
+  • Background color fixed on bullet and missile "spark" graphic.
+
++ 08/2014
+
+  + Sound events / sound effects
+  • Wrench and related sounds on helicopter repair/refuel, balloon repair, turret claiming/rebuilding/repair
+  • Violin notes for friendly capture events: bunker, turret etc. (C5). Enemy note is C4.
+  • "Pop" / "vacuum" sounds for infantry pick up + deployment, and turret restoration
+  • Door close for passing infantry entering bunkers
+  • Splat for infantry and engineer kills
+  • Crash-and-glass for bunker explosions
+  • Heavy/light impact sounds for bullets hitting metal (tanks) and other structures (bunkers)
+  • Turrets audibly "break" when destroyed.
+
+  + Game logic / rules
+  • Turret gunfire can now hit infantry, regular bunkers and Super Bunkers. However, only tank gunfire can hit Super Bunkers for damage.
+  • For "easy" game mode, turrets now fire at half the previous rate.
+
+  + UI / design
+  • Arrows on bunkers now animate to the right/left when claimed by friendly/enemy infantry.
+
+  + Miscellaneous
+  • Sound arrays (i.e., 5 bullet/metal sounds) shuffle on each rotation, reducing chance of repetitiveness.
+  • Upped turret gunfire sound array, possibly reduce cloning of Audio() in heavy fire cases.
+  • Infantry build "faster" now, so they are more closely grouped together (in units of five.)
+  • Shrapnel now rotates using CSS animations, rotation direction determined randomly.
+  • In tutorial mode, disarm user-armed Super Bunker so it doesn't accidentally kill Missile Launchers that later show up.
+  • Fixed enemy infantry + engineer die animation to be bottom-aligned.
+
++ 07/2014
+
+  • Safari 7.1 and 8 (OS X 10.10/Yosemite preview) still have HTML5 audio jank bug, thus prefer Flash. https://bugs.webkit.org/show_bug.cgi?id=116145
+  • Opacity fade on edge of game tips.
+  • Font legibility tweaks.
+
++ 04/2014
+
+  • "Hard" game option, comparable to original game's level 9.
+  • Gunfire and shrapnel now shows up on radar.
+  • Enemy unit production halts when all bunkers are friendly / player-owned.
+  • Heat-seeking rubber chickens (launched with C key.)
+  • Turret gunfire can hit tanks, vans and missile launchers in "hard" mode. Protip: Don't approach turrets from low angles.
+
++ 03/2014
+
+  • Added "Super Bunkers" (pillbox bunkers) https://en.wikipedia.org/wiki/Armor_alley#Terrain_elements

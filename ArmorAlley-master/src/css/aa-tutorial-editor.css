@@ -1,0 +1,573 @@
+/**
+ * Tutorial + Editor bits
+ */
+.finder {
+  border: 0.5px solid #000;
+  filter: invert(1);
+  left: 20px;
+  position: absolute;
+  top: 13%;
+  transform: scale(2.16);
+  transform-origin: 0 0;
+}
+
+#editor-window-help {
+  display: none;
+  left: 312px;
+  top: 13%;
+}
+
+#editor-window-help .body {
+  width: 34em;
+}
+
+/* safari desktop: zoom hacks */
+body.is_safari:not(.is-mobile).edit-mode #editor-window,
+body.is_safari:not(.is-mobile).edit-mode #editor-window-help {
+  zoom: 2;
+  /* note: half of "usual" value */
+  transform: scale3d(1.13, 1.13, 1);
+  transform-origin: 0 0;
+}
+
+body.is_safari:not(.is-mobile).edit-mode #editor-window-help {
+  /* safari scale shenanigans: roughly half */
+  left: 160px;
+}
+
+body.is_safari:not(.is-mobile).edit-mode #editor-window {
+  left: 10px;
+}
+
+body.edit-mode #mobile-controls {
+  /* when in editor, hide gamepad UI entirely. */
+  display: none;
+}
+
+body.has-gamepad.gamepad-active .hide-on-gamepad {
+  display: none;
+}
+
+body.has-gamepad.gamepad-active u {
+  /* by default, don't underline keyboard-type letters when gamepad is active. */
+  text-decoration: none;
+}
+
+body.edit-mode .zone-flag {
+  border-radius: 2px;
+  left: 1px;
+  top: 1px;
+}
+
+.finder .title-bar {
+  background: #f3f3f3;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px 0;
+  height: 7px;
+  position: relative;
+  text-align: center;
+}
+
+.finder .title-bar-label {
+  background: #f3f3f3;
+  color: #000;
+  display: inline-block;
+  font-family:
+    FA Sysfont C,
+    courier,
+    sans-serif;
+  font-size: 6.5px;
+  font-weight: 400;
+  left: 50%;
+  line-height: 123%;
+  margin-top: -0.5px;
+  padding: 0 3px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+}
+
+.finder .title-bar-stripes {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAECAAAAAAl7gk2AAAAE0lEQVR42mPcz0AAMDpQQQVBWwCpNAIDi0boDwAAAABJRU5ErkJggg==)
+    0 0/16.5px 1.5px;
+  border-color: #f3f3f3;
+  border-style: solid;
+  border-width: 0.5px 0.25px;
+  box-sizing: border-box;
+  height: 100%;
+  image-rendering: -webkit-optimize-contrast;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.finder .title-bar-label,
+.finder .title-bar-stripes {
+  pointer-events: none;
+}
+
+.finder.active {
+  outline: #666 solid 0.5px;
+}
+
+.finder .body {
+  background: hsla(0, 0%, 95%, 0.75);
+  border-top: 0.5px solid #000;
+  color: #000;
+  font-family: var(--monospace);
+  overflow: hidden;
+  padding: 1em;
+  position: relative;
+  width: 23em;
+}
+
+.finder .body,
+.finder .body ul.row li {
+  /* tutorial window */
+  font-size: 5px;
+}
+
+.finder .body .grid p {
+  margin-bottom: 0.75em;
+}
+
+.finder .body ul.row {
+  display: block;
+  font-size: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.finder .body ul.row li {
+  border: 0.25px solid #999;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 1px;
+  text-align: center;
+  width: 20%;
+}
+
+.finder .body ul.row + ul.row li {
+  border-top: none;
+}
+
+.finder .body ul.row li:not(:last-of-type) {
+  border-right: none;
+}
+
+#tutorial-window {
+  display: none;
+  left: 50%;
+  top: 50%;
+  transform: scale3d(1.25, 1.25, 1) translate3d(-50%, -50%, 0);
+  pointer-events: none;
+  /* semi-transparent overlay */
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* not iPhone, though - on portrait, scaling up will overlap controls. */
+body.is_iphone #tutorial-window {
+  transform: scale3d(1, 1, 1) translate3d(-50%, -50%, 0);
+}
+
+#tutorial-window.finder .title-bar {
+  height: calc(7px * var(--gs));
+  border-width: calc(1px * var(--gs)) 0;
+}
+
+#tutorial-window.finder h3 {
+  font-size: calc(7px * var(--gs));
+}
+
+#tutorial-window.finder .title-bar-label {
+  font-size: calc(6.5px * var(--gs));
+  margin-top: calc(-0.5px * var(--gs));
+  padding: 0 calc(3px * var(--gs));
+}
+
+#editor-window .title-bar-stripes,
+#editor-window-help .title-bar-stripes {
+  /* stripes are a bit more compact in editor. */
+  background-size: 16.5px 1px;
+}
+
+#tutorial-window.finder .body {
+  /**
+   * Lighten background, since helicopter underneath for now.
+   * Note that colors are inverted for this window, heh.
+   */
+  background: rgba(255, 255, 255, 0.15);
+  font-size: calc(5px * var(--gs));
+}
+
+#tutorial-window.finder .body img {
+  /* images are safe to scale via zoom - in Safari, at least. */
+  zoom: var(--gs);
+}
+
+body.tutorial-mode #tutorial-window {
+  display: block;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+body.tutorial-mode #tutorial-window.active {
+  opacity: 1;
+}
+
+body.tutorial-mode.game-over #tutorial-window {
+  /* Hide if the game ends, e.g., van reached a base. */
+  display: none !important;
+}
+
+body.game-paused #tutorial-window {
+  display: none !important;
+}
+
+#tutorial-window .title-bar {
+  image-rendering: smooth;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+#tutorial-window .body {
+  min-width: 26em;
+}
+
+#tutorial-window .body img {
+  filter: invert(1);
+  vertical-align: middle;
+}
+
+#tutorial-window .body h3 img {
+  vertical-align: top;
+}
+
+#tutorial-window .body p {
+  line-height: 1.33em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#tutorial-window .body p:not(:last-of-type) {
+  margin-bottom: 0.55em;
+}
+
+#tutorial-window .body .mobile-touch-example {
+  display: inline-block;
+  padding: calc(0.5px * var(--gs));
+  box-sizing: content-box;
+  border-radius: 100%;
+  border: calc(0.5px * var(--gs)) solid #666;
+  vertical-align: text-top;
+  line-height: calc(4.74px * var(--gs));
+  --size: calc(5px * var(--gs));
+  width: var(--size);
+  height: var(--size);
+  text-align: center;
+}
+
+/* special case: smaller headers in tutorial, because there are two. */
+body.tutorial-mode #battle-over-letter .letter-content h1 {
+  font-size: calc(13px * var(--gs));
+}
+
+body.tutorial-mode #battle-over-letter .letter-content h1 ~ h1 {
+  /* secondary header */
+  font-size: calc(12px * var(--gs));
+}
+
+body.tutorial-mode #game-tips .tips-container {
+  color: #999;
+}
+
+body.tutorial-mode #game-tips .tips-container b {
+  color: #fff;
+}
+
+body.edit-mode #battlefield .sprite {
+  position: absolute;
+}
+
+body.edit-mode #battlefield .terrain-item {
+  transition: margin 0.25s ease-out;
+  margin-bottom: 0;
+}
+
+/* ignore events on certain "non-moveable" sprites */
+body.edit-mode
+  #battlefield
+  .sprite:not(.end-bunker):not(.base):not(.exploding):hover {
+  border-radius: 3px;
+  outline: #999 solid 1px;
+}
+
+body.edit-mode #battlefield .sprite.selected:not(.exploding) {
+  border-radius: 3px;
+  /* override :not(), ugh. */
+  outline: #090 solid 1px !important;
+}
+
+body.edit-mode #battlefield .terrain-item.submerged {
+  margin-bottom: -27px;
+}
+
+body.edit-mode #battlefield {
+  cursor: grab;
+}
+
+#battlefield #cutoff-line {
+  border-top: 0.75px dotted #666;
+  bottom: 0;
+  height: 0;
+  left: 0;
+  margin-bottom: -1px;
+  pointer-events: none;
+  position: absolute;
+  transition:
+    height 0.25s ease-in-out,
+    margin 0.25s ease-in-out;
+  width: 100%;
+}
+
+#battlefield #cutoff-line.active {
+  height: 32px;
+  margin-bottom: 0;
+  pointer-events: auto;
+}
+
+#editor-window {
+  display: none;
+}
+
+#editor-window .grid {
+  position: relative;
+}
+
+#editor-window h3,
+#editor-window-help h3 {
+  font-size: 6px;
+}
+
+#editor-window ul.inline-list {
+  margin: 0;
+  padding: 0 0 1em;
+}
+
+#editor-window ul.inline-list li {
+  display: inline-block;
+  margin-bottom: 0;
+  min-width: 11em;
+}
+
+ul.inline-list li:not(:first-of-type) {
+  margin-left: 0;
+}
+
+#editor-window .static-sprite {
+  background-position: 100% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+#editor-window .static-sprite.default {
+  background-image: url(../../assets/image/UI/icon_savegame.png);
+  height: 16px;
+  width: 16px;
+}
+
+#editor-window .static-sprite.barb-wire {
+  background-image: url(../../assets/image/barb-wire.png);
+}
+
+#editor-window .static-sprite.balloon {
+  /* TODO: balloon-static.png? */
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAiBAMAAAAHRyIyAAAAD1BMVEUAAAAAAADa2tqzh1SHVAC3ExoMAAAAAXRSTlMAQObYZgAAAKVJREFUeF6t1OEJxCAMQGGzQd4KrpAV3H+mM1BziJjLQd8/5SOUorZ3E9BtGW37ANsy2vd7R2MS2Dc8DQYx6WQsZubjZCOb1cWY/M54mCFg19DFSBnBLAutMZz9UmOUmRMyM5XRpMYapMxVLzOh39mIb6PG8h/iavYPu7jxGDOKTBsOAE7hxUFyhqRMz0MeYByH3LncmTozK11As/w6lx6H+lPzfh8GtaYB2nfp/AAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 8.5px;
+  width: 19px;
+}
+
+#editor-window .static-sprite.cactus {
+  background-image: url(../../assets/image/cactus.png);
+}
+
+#editor-window .static-sprite.cactus2 {
+  background-image: url(../../assets/image/cactus2.png);
+}
+
+#editor-window .static-sprite.cloud {
+  background-image: url(../../assets/image/cloud-1.png);
+  height: 10px;
+  width: 34px;
+}
+
+#editor-window .static-sprite.gravestone {
+  background-image: url(../../assets/image/gravestone.png);
+}
+
+#editor-window .static-sprite.gravestone2 {
+  background-image: url(../../assets/image/gravestone2.png);
+}
+
+#editor-window .static-sprite.grave-cross {
+  background-image: url(../../assets/image/grave-cross.png);
+}
+
+#editor-window .static-sprite.landing-pad {
+  /* TODO: landing-pad-static.png? */
+  background: url(../../assets/image/UI/landing-pad-animated.gif) 0 0 / contain;
+  height: 3.5px;
+  width: 40.5px;
+}
+
+#editor-window .static-sprite.turret {
+  background: url(../../assets/image/UI/turret-static.gif) 50% 0 / contain
+    no-repeat;
+  height: 10px;
+  width: 12px;
+}
+
+#editor-window .static-sprite.engineer {
+  background-image: url(../../assets/image/UI/engineer-static.png);
+}
+
+#editor-window .static-sprite.bunker {
+  background-image: url(../../assets/image/bunker_mac.png);
+}
+
+#editor-window .static-sprite.super-bunker {
+  background-image: url(../../assets/image/super-bunker_mac.png);
+}
+
+#active-sprite {
+  bottom: 0;
+  filter: invert(1);
+  height: 12px;
+  position: absolute;
+  right: 0;
+  width: 32px;
+}
+
+#editor-clipboard {
+  display: none;
+}
+
+#editor-clipboard.active {
+  display: inline-block;
+}
+
+#marquee {
+  background: rgba(33, 99, 33, 0.25);
+  border: 1px solid #393;
+  height: 0;
+  left: 0;
+  opacity: 0;
+  /* important: events need to fall through this, so JS sees clicks underneath. */
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transition: opacity 125ms ease-out;
+  width: 0;
+}
+
+body.edit-mode #top-bar {
+  /* crop the top, reserving radar for click-and-drag / scrubbing */
+  height: calc(34px * var(--gs));
+}
+
+/**
+ * Sprites for editor UI
+ */
+#editor-window .sand-dune {
+  background-image: url(../../assets/image/sand-dune.png);
+}
+
+#editor-window .sand-dunes {
+  background-image: url(../../assets/image/sand-dunes.png);
+}
+
+#editor-window .checkmark-grass {
+  background-image: url(../../assets/image/checkmark-grass.png);
+}
+
+#editor-window .flower {
+  background-image: url(../../assets/image/flower.png);
+}
+
+#editor-window .flowers {
+  background-image: url(../../assets/image/flowers.png);
+}
+
+#editor-window .flower-bush {
+  background-image: url(../../assets/image/flower-bush.png);
+}
+
+#editor-window .tree {
+  background-image: url(../../assets/image/tree.png);
+}
+
+#editor-window .tumbleweed {
+  background-image: url(../../assets/image/tumbleweed.png);
+}
+
+#editor-window .palm-tree {
+  background-image: url(../../assets/image/palm-tree.png);
+}
+
+#editor-window .rock {
+  background-image: url(../../assets/image/rock.png);
+}
+
+#editor-window .rock2 {
+  background-image: url(../../assets/image/rock2.png);
+}
+
+#editor-window .grass {
+  background-image: url(../../assets/image/grass.png);
+}
+
+.terrain-item {
+  bottom: auto;
+  top: 0;
+}
+
+.barb-wire,
+.cactus,
+.cactus2 {
+  background-size: contain;
+}
+
+/* Editor UI */
+#radar-scrubber {
+  background: rgba(0, 255, 0, 0.5);
+  border: 0.5px solid #393;
+  border-bottom: none;
+  border-top: none;
+  box-sizing: border-box;
+  cursor: grab;
+  left: 0;
+  opacity: 0.5;
+  position: absolute;
+  /* sit atop the fuel line */
+  top: 35px;
+  width: 32px;
+  height: 6px;
+  z-index: 9;
+}
+
+#radar-scrubber:hover {
+  opacity: 0.65;
+}
+
+#radar-scrubber.active {
+  cursor: grabbing;
+  opacity: 0.75;
+}

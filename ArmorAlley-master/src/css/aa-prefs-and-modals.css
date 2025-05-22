@@ -1,0 +1,1321 @@
+/**
+ * Preferences and classic mac modal bits
+ */
+body.prefs-modal-open #aa,
+body.prefs-modal-open #game-menu-wrapper {
+  /* prevent clicks on the battlefield and/or game menu. */
+  pointer-events: none;
+}
+
+body.prefs-modal-open #envelopes-placeholder {
+  /* when battle over, allow prefs to override / display on top. */
+  display: none;
+}
+
+/* prefs + modal stuff - based on original 68K Macintosh UI */
+#game-prefs-modal {
+  border: 1px solid #000;
+  font-size: 0;
+  left: 50%;
+  top: 50.5%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 550px;
+  /* ensure this fits on small screens, e.g., mobile + portrait. */
+  max-width: 99vw;
+  z-index: 11;
+}
+
+body:not(.is_iphone).prefs-modal-open.network #game-prefs-modal {
+  /* a little wider */
+  width: 560px;
+}
+
+#game-prefs-modal #game-prefs-form {
+  max-height: 80vh;
+}
+
+body.is_iphone #game-prefs-modal {
+  /* portrait */
+  top: 54%;
+}
+
+body.is_iphone #game-prefs-modal .body {
+  /* on mobile, allow full height as outer element is constrained. */
+  max-height: 100vh;
+}
+
+body.is_iphone #game-prefs-modal #game-prefs-form {
+  max-height: 80vh;
+}
+
+/* larger if a standalone / homescreen app */
+body.is_standalone #game-prefs-modal .body {
+  max-height: 80vh;
+}
+
+body.is_standalone #game-prefs-modal #game-prefs-form {
+  max-height: 79vh;
+}
+
+#game-prefs-submit {
+  position: relative;
+}
+
+#game-prefs-cancel {
+  display: none;
+  margin-top: 5px;
+}
+
+#game-prefs-modal.is-network #game-prefs-cancel {
+  display: block;
+  /* positioning shenanigans. */
+  margin-top: 9px;
+  margin-bottom: -6px;
+}
+
+/* hide once the game has started. */
+body.game-started #game-prefs-modal.is-network #game-prefs-cancel {
+  display: none;
+}
+
+#game-prefs-modal p.select-level-only {
+  padding-bottom: 12px;
+  padding-left: 0;
+  margin-left: 16px;
+  margin-bottom: 1px;
+}
+
+#game-prefs-modal.select-level #game-prefs-header button,
+#game-prefs-modal.select-level fieldset:not(.select-level),
+#game-prefs-modal:not(.select-level) .select-level-only {
+  /* hide all except "select level" in that mode. */
+  display: none;
+}
+
+/* all except "what's new", in that mode. */
+#game-prefs-modal.whats-new fieldset:not(.whats-new),
+#game-prefs-modal:not(.whats-new) .whats-new-only {
+  display: none;
+}
+
+#game-prefs-modal.whats-new fieldset.whats-new code {
+  font-weight: 700;
+}
+
+/* shenanigans: center the AA logo in the "select level" modal */
+#game-prefs-modal.select-level #game-prefs-header .aa-logo {
+  align-self: center;
+}
+
+#game-prefs-modal.select-level .column:not(:first-of-type) {
+  display: none;
+}
+
+#volume-value {
+  display: inline-block;
+  min-width: 19px;
+  vertical-align: middle;
+}
+
+#game_speed-value {
+  vertical-align: middle;
+}
+
+#game-prefs-modal .game-speed-icons {
+  position: relative;
+  font-size: calc(16px * var(--prefs-font-scale));
+  line-height: 16px;
+  height: 16px;
+  padding-bottom: 1px;
+  -webkit-user-select: none;
+  user-select: none;
+  /* match .range-slider */
+  width: 200px;
+}
+
+#game-prefs-modal .emoji-turtle {
+  position: absolute;
+  left: 4px;
+  transform: scaleX(-1);
+}
+
+#game-prefs-modal .emoji-human {
+  position: absolute;
+  left: 50%;
+  margin-left: -0.25em;
+}
+
+body.is_safari #game-prefs-modal .emoji-human {
+  margin-left: -0.4em;
+}
+
+#game-prefs-modal .emoji-rabbit {
+  position: absolute;
+  right: -2px;
+  transform: scaleX(-1);
+}
+
+/* volume and game speed controls */
+#game-prefs-modal .range-slider {
+  display: inline-block;
+  appearance: none;
+  background: url(data:image/gif;base64,R0lGODlhBAAEAKEBAAAAAP///////////yH5BAEKAAEALAAAAAAEAAQAAAIGBBKGqAkFADs=)
+    0 0/3px #eee;
+  border: 1px solid #000;
+  border-radius: 16px;
+  height: 16px;
+  margin: 4px 0 0;
+  outline: 0;
+  padding: 0 2px;
+  width: 200px;
+  image-rendering: smooth;
+  image-rendering: crisp-edges;
+  /* 'auto' looks nice on non-hi-dpi Windows. */
+  image-rendering: auto;
+}
+
+body.is_safari:not(.has_touch) #game-prefs-modal .range-slider {
+  /* this looks nicer in desktop Safari. */
+  background-size: 2px;
+}
+
+#game-prefs-modal .range-slider::-webkit-slider-thumb {
+  appearance: none;
+  background: #eee;
+  box-shadow: none;
+  border: 1px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 12px;
+  width: 20px;
+}
+
+#game-prefs-modal .range-slider::-moz-range-thumb {
+  appearance: none;
+  background: #eee;
+  border: 1px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 10px;
+  width: 20px;
+}
+
+.close-button {
+  background: #fff;
+  border: 0.25px solid #000;
+  border-radius: 0.25px;
+  height: 4.5px;
+  left: 3.75px;
+  outline: hsla(0, 0%, 100%, 0.67) solid 0.25px;
+  position: absolute;
+  top: 0.75px;
+  width: 4.5px;
+  z-index: 2;
+}
+
+.close-button:active {
+  background-image: url(../../assets/image/UI/apple-close-asterisk.png);
+  background-size: contain;
+}
+
+#game-prefs-modal .body {
+  max-height: 81vh;
+  font-size: calc(11px * var(--prefs-font-scale));
+  border: 0.5px solid #000;
+  box-sizing: border-box;
+  color: #000;
+  overflow: auto;
+  position: relative;
+  /* Firefox may show scaled-up scrollbars - this helps a bit. */
+  scrollbar-width: thin;
+}
+
+#game-prefs-modal .body code.inline {
+  font-size: 90%;
+}
+
+#game-prefs-modal .body pre.block {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 85%;
+  white-space: break-spaces;
+}
+
+#game-prefs-modal .battle-list {
+  font-size: calc(12px * var(--prefs-font-scale));
+  text-align: center;
+  /* dirty tricks: space out and pull content closer to edges. */
+  width: 102%;
+  margin-left: -1%;
+}
+
+body.is_iphone .mac-classic ul.real-list li {
+  /* collapse list items somewhat */
+  padding-bottom: 0;
+}
+
+.mac-classic ul.real-list.double-indent {
+  /* for bulleted lists */
+  margin-left: 14px;
+}
+
+.mac-classic ul.real-list.paragraph-flush-left p {
+  margin-left: 0;
+}
+
+@media screen and (orientation: landscape) {
+  body.is_iphone #game-prefs-modal {
+    width: 500px;
+    top: 52.5%;
+  }
+
+  body.is_iphone #game-prefs-modal #game-prefs-form {
+    /* prevent overflowing radar */
+    max-height: 75vh;
+  }
+
+  body.is-mobile.is_safari:not(.is_iphone)
+    #game-prefs-modal.select-level
+    #game-prefs-header {
+    /* (likely) iPad: hide header entirely in battle selection */
+    display: none;
+  }
+
+  body.is_iphone #game-prefs-modal fieldset {
+    /* tighten up modal spacing at large */
+    margin: 0 6px 6px;
+    padding: 0 8px 4px;
+  }
+
+  body.is_iphone #game-prefs-modal.select-level .body {
+    font-size: calc(6.5px * var(--prefs-font-scale));
+  }
+
+  /* TODO: review sizing of some inconsistent modal elements, iOS landscape view. */
+  body.is_iphone #game-prefs-modal:not(.select-level) .body {
+    font-size: calc(6px * var(--prefs-font-scale));
+  }
+
+  /**
+   * Insane iOS Safari font size hacks on selective nodes, need WTF debugging.
+   * Bad HTML, render bug, something else?
+   */
+  body.is_iphone
+    #game-prefs-modal:not(.select-level)
+    fieldset
+    ul:not(.real-list)
+    li.inline-option,
+  body.is_iphone
+    #game-prefs-modal:not(.select-level)
+    ul
+    li
+    ul:not(.real-list)
+    li
+    label {
+    font-size: calc(9.5px * var(--prefs-font-scale));
+    vertical-align: -webkit-baseline-middle;
+  }
+
+  body.is_iphone #game-prefs-modal:not(.select-level) fn.disclaimer {
+    font-size: calc(6px * var(--prefs-font-scale));
+  }
+
+  body.is_iphone #game-prefs-modal .aa-logo {
+    /* space is at a premium. */
+    margin-top: 2.5px;
+    width: 100%;
+    padding: 0;
+  }
+
+  body.is_iphone #game-prefs-modal.is-network .aa-logo {
+    /* crunch logo down more. */
+    width: 92%;
+  }
+
+  body.is_iphone #game-prefs-modal #game-prefs-header .column:last-of-type {
+    /* condense last one */
+    flex: 0.5;
+  }
+
+  body.is_iphone #game-prefs-modal:not(.is-network) #game-prefs-submit {
+    /* space button out to balance logo at left. */
+    margin: 0 auto;
+    align-self: center;
+    min-width: 67%;
+  }
+
+  body.is_iphone #game-prefs-modal.select-level #game-prefs-header {
+    /* hide header entirely in battle selection */
+    display: none;
+  }
+
+  body.is-mobile.is_safari:not(.is_iphone)
+    #game-prefs-modal.select-level
+    #prefs-select-level {
+    /* iPad: more top spacing */
+    margin-top: 10px;
+  }
+
+  body.is_iphone #game-prefs-modal.select-level #prefs-select-level legend {
+    /* tighter spacing on iPhone */
+    padding-top: 4px;
+  }
+
+  body.is_iphone #game-prefs-modal .battle-list,
+  body.is_iphone #game-prefs-modal .battle-list label {
+    font-size: calc(11px * var(--prefs-font-scale));
+  }
+
+  body.is-mobile #select-more-info {
+    /* WTF, reset font-size for iOS Safari only in landscape??? */
+    font-size: calc(11px * var(--prefs-font-scale)) !important;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  body.is-mobile.is_safari:not(.is_iphone) #game-prefs-modal {
+    /* (likely) iPad: wider modal. */
+    width: 600px;
+  }
+
+  body.is_iphone #game-prefs-modal .battle-list,
+  body.is_iphone #game-prefs-modal .battle-list label {
+    font-size: calc(9px * var(--prefs-font-scale));
+  }
+
+  body.is_iphone #game-prefs-modal .body {
+    /* regular prefs modal: fit better on iPhone, portrait */
+    font-size: calc(9.5px * var(--prefs-font-scale));
+  }
+
+  body.is_iphone #game-prefs-modal.select-level .body {
+    /* "select level" needs to be a bit smaller. */
+    font-size: calc(9.5px * var(--prefs-font-scale));
+  }
+
+  body.is_iphone #game-prefs-modal fieldset {
+    /* tighten up modal spacing at large */
+    margin: 0 6px 10px;
+    padding: 0 8px 4px;
+  }
+}
+
+#game-prefs-modal .body,
+#game-prefs-modal .body legend {
+  background: #fff;
+}
+
+#game-prefs-modal p {
+  /* reasonable line height? */
+  line-height: 1.35em;
+  padding-top: 3px;
+}
+
+#game-prefs-header {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 10px 0;
+  width: 100%;
+}
+
+#game-prefs-header .aa-logo {
+  display: inline-block;
+  padding-right: 15px;
+  margin-left: 15px;
+  margin-top: 7.5px;
+  width: 390px;
+  max-width: 65vw;
+  height: auto;
+  image-rendering: auto;
+}
+
+#game-prefs-modal.select-level .aa-logo {
+  /* larger logo only in this one case. */
+  width: auto;
+  max-width: 95%;
+  box-sizing: border-box;
+  image-rendering: pixelated;
+}
+
+#game-prefs-header .column {
+  align-self: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+body:not(.is_iphone) #game-prefs-header .column:last-of-type {
+  /* ready + cancel buttons: right-side alignment, iPad */
+  padding-right: 6px;
+}
+
+#game-prefs-modal textarea {
+  color: #000;
+  font-family: geneva, verdana, arial, sans-serif;
+  font-size: 10px;
+  height: 16rem;
+  transform: scale3d(0.33, 0.33, 1);
+  transform-origin: 0 0;
+  width: 23rem;
+}
+
+#game-prefs-modal #form-scroller-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+}
+
+#game-prefs-modal #form-scroller {
+  overflow-y: auto;
+}
+
+body.is_firefox #game-prefs-modal .fieldset-container {
+  /**
+   * best we can do for Firefox, which doesn't support zoom
+   * and thus scrollbars are larger due to transforms - long story.
+   * 11/2023: specific to firefox, because Chrome Canary started
+   * ignoring custom scrollbars if `scrollbar-width` was set.
+   */
+  scrollbar-width: thin;
+}
+
+/**
+ * System 7-style scrollbars
+ * Hat tip: https://github.com/sakofchit/system.css/ (MIT)
+ * https://github.com/sakofchit/system.css/blob/main/LICENSE
+ */
+#game-prefs-modal .fieldset-container::-webkit-scrollbar {
+  background-color: #fff;
+  width: 22px;
+}
+
+#game-prefs-modal .fieldset-container::-webkit-scrollbar-track {
+  /* black checkerboard pattern */
+  background: url(data:image/gif;base64,R0lGODlhBAAEAKEBAAAAAP///////////yH5BAEKAAEALAAAAAAEAAQAAAIGBBKGqAkFADs=)
+    0 0/3px #fff;
+  border-left: 2px solid #000;
+  image-rendering: -webkit-optimize-contrast;
+  width: 10px;
+}
+
+#game-prefs-modal .fieldset-container::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-left: 2px solid #000;
+  border-right: 0.5px solid #000;
+  box-sizing: content-box;
+  /* two shadows, which are hidden when at the top and bottom */
+  box-shadow:
+    0 2px 0 #000,
+    0 -2px 0 #000;
+  width: 20px;
+}
+
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:horizontal:end:increment,
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:horizontal:start:decrement,
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:vertical:end:increment,
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:vertical:start:decrement {
+  display: block;
+}
+
+#game-prefs-modal .fieldset-container::-webkit-scrollbar-button:vertical:start {
+  background-image: url(../../assets/image/UI/icon/scrollbar-up.svg);
+  background-repeat: no-repeat;
+  height: 23.38px;
+}
+
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:vertical:start:active {
+  background-image: url(../../assets/image/UI/icon/scrollbar-up-active.svg);
+  background-repeat: no-repeat;
+  height: 23.38px;
+}
+
+#game-prefs-modal .fieldset-container::-webkit-scrollbar-button:vertical:end {
+  background-image: url(../../assets/image/UI/icon/scrollbar-down.svg);
+  height: 23.38px;
+}
+
+#game-prefs-modal
+  .fieldset-container::-webkit-scrollbar-button:vertical:end:active {
+  background-image: url(../../assets/image/UI/icon/scrollbar-down-active.svg);
+  background-repeat: no-repeat;
+  height: 23.38px;
+}
+
+#game-prefs-modal a {
+  border-radius: 1px;
+  color: #000;
+}
+
+#game-prefs-modal a:not(.no-hover):hover {
+  background-color: #000;
+  color: #fff;
+  margin: -0.25px -1px;
+  padding: 0.25px 1px;
+}
+
+.mac-classic fieldset:first-of-type {
+  margin-top: 2px;
+}
+
+.mac-classic fieldset {
+  border: 1px solid #000;
+  margin: 0 12px 12px;
+  padding: 3px 12px 6px;
+}
+
+#game-prefs-modal button,
+.mac-classic fieldset legend,
+.mac-classic h3 {
+  font-family:
+    FA Sysfont C,
+    courier,
+    sans-serif;
+  font-size: 7px;
+  vertical-align: middle;
+}
+
+#game-prefs-modal button,
+#game-prefs-modal legend {
+  font-size: calc(15px * var(--prefs-font-scale));
+}
+
+#game-prefs-modal button:focus-visible {
+  outline-color: #000;
+}
+
+body.is_iphone #game-prefs-modal legend {
+  font-size: calc(12.5px * var(--prefs-font-scale));
+}
+
+body.is_iphone #game-prefs-modal button {
+  font-size: calc(12px * var(--prefs-font-scale));
+}
+
+.mac-classic h3 {
+  font-weight: 300;
+  margin-bottom: 0.5em;
+  margin-top: 0;
+}
+
+.mac-classic ul {
+  list-style-type: none;
+}
+
+.mac-classic ul,
+.mac-classic ul li {
+  margin: 0;
+  padding: 0;
+}
+
+.mac-classic ul li {
+  line-height: 120%;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.mac-classic .battle-list li {
+  line-height: 100%;
+}
+
+.mac-classic ul.monospace {
+  display: inline-block;
+}
+
+.mac-classic ul.monospace li {
+  display: block;
+  margin-top: 4px;
+}
+
+.mac-classic ul.monospace li label pre b {
+  /* "enabled" flag */
+  color: #000;
+}
+
+.mac-classic ul.monospace li label pre s {
+  /* "disabled" flag */
+  text-decoration: none;
+  color: #ccc;
+}
+
+.mac-classic ul.monospace li pre {
+  display: inline-block;
+  margin: 3px 0 0;
+}
+
+.mac-classic ul.monospace li pre.header {
+  width: 95%;
+  background: url(data:image/gif;base64,R0lGODlhBAAEAKEBAAAAAP///////////yH5BAEKAAEALAAAAAAEAAQAAAIGBBKGqAkFADs=)
+    0 0/3px #eee;
+  image-rendering: smooth;
+  image-rendering: crisp-edges;
+  /* 'auto' looks nice on non-hi-dpi Windows. */
+  image-rendering: auto;
+}
+
+.mac-classic ul.monospace li pre.header b {
+  background: #fff;
+  padding: 1px 8px;
+  /* counter-spacing */
+  margin: 0 -8px;
+}
+
+.mac-classic ul.monospace li label {
+  padding-left: 0;
+}
+
+.mac-classic ul.partial-bottom-spacing li {
+  margin-bottom: 4px;
+}
+
+.mac-classic .no-bottom-spacing,
+.mac-classic ul.less-bottom-spacing li {
+  margin-bottom: 0;
+}
+
+.mac-classic ul li:last-of-type {
+  margin-bottom: 4px;
+}
+
+body.is-mobile #select-more-info {
+  /* hackish: indentation for alignment */
+  margin-left: calc(6.5px * var(--prefs-font-scale));
+}
+
+.mac-classic .more-bottom-spacing,
+.mac-classic ul li.less-bottom-spacing {
+  margin-bottom: 6px;
+}
+
+.mac-classic .more-top-spacing {
+  margin-top: 6px;
+}
+
+.mac-classic ul li ul li {
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.mac-classic ul li ul.list li {
+  display: block;
+  margin-right: auto;
+}
+
+.mac-classic p {
+  margin: 0;
+  padding-top: 2px;
+}
+
+.mac-classic .compact,
+.mac-classic ul.compact li {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.mac-classic li.inline-option {
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.mac-classic ul.real-list {
+  list-style-type: disc;
+  padding-top: 2px;
+}
+
+.mac-classic p,
+.mac-classic ul li p,
+.mac-classic ul.real-list li {
+  margin-bottom: 0;
+  margin-left: 21px;
+}
+
+.mac-classic ul.real-list li {
+  display: list-item;
+}
+
+.mac-classic .indented {
+  margin-left: 9px;
+}
+
+.finder.mac-classic p.non-indented,
+.mac-classic .non-indented,
+.mac-classic ul li p.options-heading {
+  margin-left: 0;
+}
+
+.mac-classic ul.non-indented {
+  margin-left: -0.33em;
+}
+
+.mac-classic ul.real-list.non-indented ul.non-indented li {
+  /* one more nested-level fix. */
+  margin-left: 0;
+}
+
+.mac-classic .compact.full-width {
+  width: 100%;
+}
+
+.keycap-list {
+  display: inline-block;
+  width: 49%;
+  vertical-align: top;
+}
+
+.mac-classic ul ul.keycap-list li {
+  margin-left: 14px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.inline-key,
+.keycap,
+.keycap-list b {
+  display: inline-block;
+  padding: 0 3px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.keycap-list b.inline-key {
+  margin-right: 0.5px;
+}
+
+.gamepad-emoji {
+  float: left;
+  font-size: 300%;
+  line-height: 100%;
+  margin-right: 0.25em;
+  margin-top: 0;
+  vertical-align: top;
+}
+
+.gamepad-buttons b,
+.gamepad-buttons strong,
+b.gamepad-button {
+  display: inline-block;
+  padding: 0 3.5px;
+  box-sizing: content-box;
+  border: 1px solid #000;
+  border-radius: 100%;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.gamepad-buttons strong {
+  font-weight: 700;
+  padding: 0 5px;
+  border-radius: 7px;
+}
+
+.mac-classic input,
+.mac-classic label {
+  vertical-align: top;
+}
+
+.mac-classic label.full-width {
+  display: inline-block;
+  width: 100%;
+}
+
+.mac-classic input[type='text'],
+.mac-classic input[type='url'] {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  display: block;
+  font-size: calc(10px * var(--prefs-font-scale));
+  padding: 4px;
+  width: 100%;
+}
+
+.mac-classic input[type='text']:focus,
+.mac-classic input[type='url']:focus {
+  outline: 0;
+}
+
+.mac-classic select {
+  --bg-size: calc(8px * var(--menu-scale));
+  appearance: none;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23000000'><polygon points='0,0 100,0 50,50'/></svg>")
+    no-repeat;
+  background-position: calc(100% - 8px) 70%;
+  background-size: calc(var(--bg-size));
+  border: 0.5px solid #999;
+  border-radius: 2px;
+  color: #ccc;
+  cursor: pointer;
+  font-family:
+    FA Sysfont C,
+    courier,
+    sans-serif;
+  font-size: calc(10px * var(--menu-scale));
+  font-weight: 400;
+  height: calc(18.25px * var(--menu-scale));
+  /* vertical align shenanigans */
+  margin: -2px 0 0 2px;
+  padding: 0 32px 0 0;
+  vertical-align: middle;
+  text-indent: calc(4px * var(--menu-scale));
+  scrollbar-width: thin;
+}
+
+#game-prefs-modal select {
+  border-color: #000;
+  color: #000;
+  font-family:
+    FA Sysfont C,
+    geneva,
+    verdana,
+    arial,
+    sans-serif;
+  font-size: calc(12px * var(--prefs-font-scale));
+  border-width: 1px;
+  margin-left: 0;
+  margin-top: 1px;
+  height: calc(25px * var(--prefs-font-scale));
+  background-size: 10px;
+  min-width: 11em;
+  /* room for "Tanker's Demise" */
+  text-indent: 8px;
+}
+
+.mac-classic select:active,
+.mac-classic select:focus,
+.mac-classic select:hover {
+  border-color: #fff;
+}
+
+.mac-classic input[type='checkbox'],
+.mac-classic input[type='radio'] {
+  /* https://moderncss.dev/pure-css-custom-styled-radio-buttons/ */
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid;
+  border-radius: 50%;
+  color: currentColor;
+  font: inherit;
+  height: 15px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* hackish: fix radio dot positioning */
+  transform: translateY(-0.01px);
+  width: 15px;
+}
+
+body.is-mobile.is_safari #game-prefs-modal input[type='checkbox'],
+body.is_safari #game-prefs-modal input[type='radio'] {
+  /* desktop Safari + mobile shenanigans */
+  vertical-align: top;
+}
+
+#game-prefs-modal .battle-list input[type='radio'] {
+  /* battle list tweaks */
+  margin: 0;
+  transform: translate(2px, 1px);
+}
+
+body.is_firefox .mac-classic input[type='checkbox'] {
+  position: relative;
+}
+
+.mac-classic input[type='checkbox'] {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.mac-classic input[type='checkbox']:before,
+.mac-classic input[type='radio']:before {
+  background: #000;
+  border-radius: 50%;
+  content: '';
+  height: 100%;
+  left: 0;
+  line-height: 0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: 100%;
+}
+
+.mac-classic input[type='radio']:before {
+  /* center the dot */
+  transform: scale3d(0.66, 0.66, 1);
+  transform-origin: 50% 50%;
+}
+
+.mac-classic input[type='checkbox']:before {
+  position: absolute;
+  top: -0.5px;
+  left: -0.5px;
+  width: 12px;
+  height: 12px;
+  background: url(../../assets/image/UI/x.png) 50% 50%/250%;
+  filter: drop-shadow(0px 0px 0.5px #000);
+  image-rendering: auto;
+  content: ' ';
+}
+
+.mac-classic input[type='checkbox']:checked:before,
+.mac-classic input[type='radio']:checked:before {
+  visibility: visible;
+}
+
+.mac-classic input[type='checkbox']:active {
+  opacity: 0.75;
+}
+
+.mac-classic input[type='checkbox']:active:before {
+  transform: scale(0.5);
+  transform-origin: 50% 50%;
+  visibility: visible;
+}
+
+.mac-classic input[type='checkbox']:active,
+.mac-classic input[type='checkbox']:focus {
+  background: #e0e0e0;
+}
+
+.mac-classic input[type='checkbox']:focus {
+  animation: 1s steps(1) infinite blink-bg;
+}
+
+.mac-classic input[type='radio']:active:before {
+  transform: scale(0.4);
+  transform-origin: 50%;
+  visibility: visible;
+}
+
+.mac-classic input[type='radio']:focus:before {
+  animation: 0.5s ease-in-out infinite alternate-reverse pulse;
+}
+
+.mac-classic button:disabled,
+.mac-classic input[type='checkbox']:disabled,
+.mac-classic input[type='radio']:disabled {
+  opacity: 0.33;
+}
+
+.mac-classic input[type='checkbox']:focus-visible,
+.mac-classic input[type='radio']:focus-visible {
+  /* hide outline, because we have the animation */
+  outline: 0;
+}
+
+body.has-gamepad.gamepad-active
+  #game-prefs-modal
+  .range-slider.gamepad-selected,
+body.has-gamepad.gamepad-active #game-prefs-modal .range-slider:focus,
+body.has-gamepad.gamepad-active
+  .mac-classic
+  input[type='checkbox'].gamepad-selected,
+body.has-gamepad.gamepad-active .mac-classic input[type='checkbox']:focus,
+body.has-gamepad.gamepad-active
+  .mac-classic
+  input[type='radio'].gamepad-selected,
+body.has-gamepad.gamepad-active .mac-classic input[type='radio']:focus {
+  /* visual cues for gamepad navigation */
+  outline: #339933 solid 2px;
+}
+
+body.has-gamepad.gamepad-active
+  #game-prefs-modal
+  .more-info-toggle.gamepad-selected,
+body.has-gamepad.gamepad-active #game-prefs-modal .more-info-toggle:focus,
+body.has-gamepad.gamepad-active
+  .mac-classic
+  button:not([type='submit']).gamepad-selected,
+body.has-gamepad.gamepad-active .mac-classic button:not([type='submit']):focus {
+  /* gamepad highlight: "more info", cancel / reset buttons */
+  border-color: #393;
+}
+
+body.has-gamepad.gamepad-active
+  #game-prefs-modal
+  button.primary.gamepad-selected,
+body.has-gamepad.gamepad-active #game-prefs-modal button.primary:focus {
+  /* gamepad highlight, OK buttons */
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 4px #393;
+}
+
+.finder.mac-classic p {
+  margin: 0.1rem 0.25rem 0;
+  padding: 0;
+}
+
+.mac-classic fn.disclaimer {
+  font-size: calc(10px * var(--prefs-font-scale));
+}
+
+#game-prefs-modal fieldset {
+  position: relative;
+}
+
+#game-prefs-modal .network,
+#game-prefs-modal.is-guest .show-to-host,
+#game-prefs-modal.is-host .show-to-guest {
+  /* hide by default */
+  display: none;
+}
+
+#game-prefs-modal.is-network .network {
+  display: block;
+}
+
+/* make room for mac icons */
+#game-prefs-modal.is-network #gameplay-options,
+#game-prefs-modal.is-network #network-options,
+#game-prefs-modal.is-network #traffic-control {
+  margin-top: 5px;
+}
+
+#game-prefs-modal.is-network .network-icon {
+  background-color: #fff;
+  background-image: url(../../assets/image/UI/win95-networking-icon.png);
+  background-position: 4px 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  image-rendering: optimizeQuality;
+  image-rendering: -webkit-optimize-contrast;
+  /* shenanigans to hide the through-line */
+  padding-left: 6px;
+  padding-right: 4px;
+  position: absolute;
+  vertical-align: top;
+}
+
+#game-prefs-modal.is-network .network-icon-inline {
+  background-color: transparent;
+  background-position: 0 0;
+  background-size: 12px 12px;
+  margin-bottom: -2px;
+  /* avoid messing up the line height */
+  padding: 0;
+  position: relative;
+  vertical-align: middle;
+}
+
+#game-prefs-modal.is-network .hide-if-network,
+body.game-started #game-prefs-modal .hide-if-started {
+  display: none;
+}
+
+/* Redefine for prefs modal, which is not scaled up. */
+#game-prefs-modal button {
+  border-width: 1.5px;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  min-width: 3.5rem;
+  padding: 1px 10px;
+}
+
+#game-prefs-modal button.primary {
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 4px #000;
+  outline-offset: 1px;
+  padding: 1px 20px;
+  /* Modal-specific: extra right spacing. */
+  margin-right: 10px;
+}
+
+#game-prefs-modal button.primary:not(:disabled):focus-visible {
+  /* blink */
+  animation: 1s steps(2) infinite button-blink-larger;
+}
+
+#game-prefs-modal button:not(.generic-cta):not(:disabled):focus-visible,
+button.primary:not(:disabled):focus-visible,
+button:not(.generic-cta):not(:disabled):focus-visible {
+  outline: 0;
+  animation: 1s infinite modal-pulse;
+}
+
+@keyframes modal-pulse {
+  50% {
+    opacity: 0.75;
+    transform: scale3d(0.9, 0.9, 1);
+  }
+}
+
+#game-prefs-modal button.primary:not(:disabled):active,
+#game-prefs-modal button:not(.generic-cta):not(:disabled):active,
+button.primary:not(:disabled):active,
+button:not(.generic-cta):not(:disabled):active {
+  background-color: #000;
+  color: #fff;
+}
+
+body.game-started #network-prompt {
+  /* always hide this prefs panel option, once game has begun. */
+  display: none;
+}
+
+/* outer -> inner */
+#game-prefs-modal .border-3 {
+  border-color: #dadaff #8787b3 #8787b3 #dadaff;
+  border-style: solid;
+  border-width: 1px;
+}
+
+#game-prefs-modal .border-2 {
+  border: 1px solid #cdcdcd;
+}
+
+#game-prefs-modal .border-1 {
+  border-color: #8787b3 #dadaff #dadaff #8787b3;
+  border-style: solid;
+  border-width: 1px;
+}
+
+body.is-mobile.is_safari #network-options > ul > li {
+  /* mobile Safari: double margins for some reason here? :X */
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+#network-options-chat-box {
+  border: 0.5px solid #999;
+  border-bottom: none;
+  word-break: break-word;
+}
+
+#network-options-chat-scroll {
+  border-color: #999;
+  max-height: 10em;
+  overflow-y: auto;
+  padding: 3px;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+#game-prefs-modal #network-chat-input {
+  border-color: #999;
+  border-radius: 0;
+}
+
+/* grey out everything that isn't "exempt" and still available in-game within a shared network fieldset. */
+#game-prefs-modal
+  fieldset.sync-over-network.faded
+  > ul
+  > li:not(.allow-in-game-updates),
+#game-prefs-modal
+  fieldset.sync-over-network.faded
+  legend:not(.allow-in-game-updates) {
+  opacity: 0.67;
+}
+
+#game-prefs-modal
+  fieldset.sync-over-network.faded
+  > ul
+  > li.allow-in-game-updates,
+#game-prefs-modal fieldset.sync-over-network.faded-exclude-legend legend {
+  opacity: 1;
+}
+
+button.attention:not(:active) {
+  animation: 1s steps(2) infinite button-blink;
+}
+
+#game-prefs-modal button.attention:not(:active) {
+  animation: 1s steps(2) infinite button-blink-larger;
+}
+
+/* block-level display shenanigans */
+body.is-mobile #game-prefs-modal .mobile-only-block {
+  display: block;
+}
+
+body.is-mobile #game-prefs-modal .mobile-only.network {
+  /* hackish: override display when combined with non-network game, .network-only case */
+  display: initial;
+}
+
+#game-prefs-modal .more-info-toggle {
+  /* allow button to collapse */
+  min-width: auto;
+}
+
+#game-prefs-modal .more-info-toggle:hover {
+  background: #000;
+  color: #fff;
+}
+
+#game-prefs-modal .more-info-toggle:active {
+  transform: scale3d(0.8, 0.8, 1);
+  transform-origin: 50% 50%;
+}
+
+#game-prefs-modal legend .more-info-toggle {
+  margin-right: 2px;
+  /* smaller button size */
+  padding: 0 6px;
+}
+
+#game-prefs-modal .more-info {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+  transition-property: height, opacity, padding;
+  height: 0;
+  opacity: 0;
+  padding-bottom: 0;
+}
+
+#game-prefs-modal .more-info.active {
+  opacity: 1;
+  padding-bottom: 5px;
+}
+
+@keyframes button-blink {
+  /**
+   * This is generally considered bad form, evil UX/UI,
+   * and you should never do it.
+   * ...Except in this one specific case, of course. 😇
+   */
+  0% {
+    box-shadow:
+      0 0 0 0.5px #fff,
+      0 0 0 2px #000;
+  }
+
+  to {
+    border-color: transparent;
+    box-shadow:
+      0 0 0 4px #fff,
+      0 0 0 2px #fff;
+  }
+}
+
+@keyframes button-blink-larger {
+  /* See above. :D */
+  0% {
+    box-shadow:
+      0 0 0 1px #fff,
+      0 0 0 4px #000;
+  }
+
+  to {
+    border-color: transparent;
+    box-shadow:
+      0 0 0 8px #fff,
+      0 0 0 4px #fff;
+  }
+}
